@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "./tokens.css";
-@source "../../components/src/**/*.{ts,tsx}";
 
 /* Tailwind v4 Theme Configuration */
 @theme inline {
