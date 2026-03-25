@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import type { ButtonVariant, ButtonSize, ButtonContent } from './Button.types'
@@ -76,7 +75,7 @@ const buttonVariants = cva(
 const iconStyle = { width: 'var(--icon-size)', height: 'var(--icon-size)' }
 
 export interface ButtonProps
-  extends ButtonPrimitive.Props,
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   /** Maps to Figma "Type" property */
   variant?: ButtonVariant
@@ -119,7 +118,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const isIconOnly = content === 'Icon only'
 
     return (
-      <ButtonPrimitive
+      <button
         data-slot="button"
         ref={ref}
         className={cn(
@@ -142,7 +141,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             )}
           </>
         )}
-      </ButtonPrimitive>
+      </button>
     )
   }
 )
