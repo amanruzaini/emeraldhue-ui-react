@@ -8,18 +8,11 @@ export type ButtonContent = 'Label + icon' | 'Icon only'
 
 export const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2]',
+    'inline-flex items-center justify-center',
     'font-default font-weight-medium',
     'rounded-md',
-    'border-solid',
-    'border-t-xs',
-    'border-l-xs',
-    'border-r-xs',
-    'border-b-sm',
-    'default-ring-bezel',
     'transition-colors duration-quick-1',
-    'focus-visible:outline-none focus-visible:focus-ring-bezel',
-    'hover:hover-ring-bezel',
+    'focus-visible:outline-none',
     'disabled:no-ring disabled:pointer-events-none disabled:cursor-not-allowed',
   ],
   {
@@ -28,46 +21,86 @@ export const buttonVariants = cva(
         Primary: [
           'bg-brand',
           'text-all-white',
+          'border-solid border-t-xs border-x-xs',
           'border-brand-strong',
+          'default-ring-bezel',
           'hover:bg-brand-hover',
+          'hover:hover-ring-bezel',
+          'focus-visible:focus-ring-bezel',
           'active:bg-brand-active',
           'disabled:bg-brand-disabled',
           'disabled:border-brand-disabled',
         ],
         Secondary: [
           'bg-default',
-          'text-brand',
-          'border-brand',
+          'text-strong',
+          'border-solid border-t-xs border-x-xs',
+          'border-default',
+          'default-ring-bezel',
           'hover:bg-neutral',
+          'hover:hover-ring-bezel',
+          'focus-visible:focus-ring-bezel',
           'active:bg-neutral-hover',
-          'disabled:text-brand-disabled',
-          'disabled:border-brand-disabled',
+          'disabled:bg-disabled',
+          'disabled:text-inverted-disabled',
+          'disabled:border-disabled',
         ],
         Tertiary: [
           'bg-transparent',
-          'text-brand',
-          'border-transparent',
+          'text-strong',
           'hover:bg-neutral',
           'active:bg-neutral-hover',
-          'disabled:text-brand-disabled',
+          'focus-visible:bg-default',
+          'focus-visible:focus-ring',
+          'disabled:text-disabled',
         ],
         Destructive: [
           'bg-error',
           'text-all-white',
+          'border-solid border-t-xs border-x-xs',
           'border-error-strong',
+          'default-ring-bezel',
           'hover:bg-error-hover',
+          'hover:hover-ring-bezel',
+          'focus-visible:focus-ring-bezel',
           'active:bg-error-active',
           'disabled:bg-error-disabled',
           'disabled:border-error-disabled',
         ],
       },
       size: {
-        xs: 'px-[var(--eh-spacing-4)] py-[var(--eh-spacing-2)] text-body-xs tracking-[var(--eh-font-letter-spacing-body-xs)] [--icon-size:var(--eh-icon-xs)]',
-        sm: 'px-[var(--eh-spacing-6)] py-[var(--eh-spacing-4)] text-body-sm tracking-[var(--eh-font-letter-spacing-body-sm)] [--icon-size:var(--eh-icon-sm)]',
-        md: 'px-[var(--eh-spacing-6)] py-[var(--eh-spacing-6)] text-body-sm tracking-[var(--eh-font-letter-spacing-body-sm)] [--icon-size:var(--eh-icon-md)]',
-        lg: 'px-[var(--eh-spacing-6)] py-[var(--eh-spacing-7)] text-body-md tracking-[var(--eh-font-letter-spacing-body-md)] [--icon-size:var(--eh-icon-md)]',
+        xs: 'border-b-xs p-[var(--eh-spacing-1)] text-body-xs tracking-[var(--eh-font-letter-spacing-body-xs)] [--icon-size:var(--eh-icon-sm)]',
+        sm: 'border-b-sm [--icon-size:var(--eh-icon-sm)]',
+        md: 'border-b-md p-[var(--eh-spacing-6)] text-body-sm tracking-[var(--eh-font-letter-spacing-body-sm)] [--icon-size:var(--eh-icon-md)]',
+        lg: 'border-b-lg px-[var(--eh-spacing-6)] py-[var(--eh-spacing-7)] text-body-md tracking-[var(--eh-font-letter-spacing-body-md)] [--icon-size:var(--eh-icon-md)]',
       },
     },
+    compoundVariants: [
+      {
+        variant: 'Primary',
+        size: 'sm',
+        className:
+          'px-[var(--eh-spacing-6)] py-[var(--eh-spacing-4)] text-body-sm tracking-[var(--eh-font-letter-spacing-body-sm)]',
+      },
+      {
+        variant: 'Secondary',
+        size: 'sm',
+        className:
+          'p-[var(--eh-spacing-4)] text-body-xs tracking-[var(--eh-font-letter-spacing-body-xs)]',
+      },
+      {
+        variant: 'Tertiary',
+        size: 'sm',
+        className:
+          'p-[var(--eh-spacing-4)] text-body-sm tracking-[var(--eh-font-letter-spacing-body-sm)]',
+      },
+      {
+        variant: 'Destructive',
+        size: 'sm',
+        className:
+          'px-[var(--eh-spacing-6)] py-[var(--eh-spacing-4)] text-body-xs tracking-[var(--eh-font-letter-spacing-body-xs)]',
+      },
+    ],
     defaultVariants: {
       variant: 'Primary',
       size: 'md',
@@ -119,6 +152,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const isIconOnly = content === 'Icon only'
+    const buttonLabel = label ?? children
 
     return (
       <button
@@ -127,6 +161,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant, size }),
           isIconOnly && 'aspect-square',
+          !isIconOnly && 'gap-[var(--eh-spacing-2)]',
           className
         )}
         {...props}
@@ -136,11 +171,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           <>
             {iconLeading && leadIcon && (
-              <span style={iconStyle}>{leadIcon}</span>
+              <span className="shrink-0" style={iconStyle}>
+                {leadIcon}
+              </span>
             )}
-            {label ?? children}
+            <span className="whitespace-nowrap">{buttonLabel}</span>
             {iconTrailing && trailIcon && (
-              <span style={iconStyle}>{trailIcon}</span>
+              <span className="shrink-0" style={iconStyle}>
+                {trailIcon}
+              </span>
             )}
           </>
         )}

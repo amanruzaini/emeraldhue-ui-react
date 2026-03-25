@@ -1,4 +1,5 @@
 import figma from '@figma/code-connect'
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { Button } from './Button'
 
 figma.connect(
@@ -33,6 +34,9 @@ figma.connect(
         content={content}
         iconLeading={iconLeading}
         iconTrailing={iconTrailing}
+        leadIcon={iconLeading ? <ChevronLeft size="100%" /> : undefined}
+        trailIcon={iconTrailing ? <ChevronRight size="100%" /> : undefined}
+        icon={content === 'Icon only' ? <Plus size="100%" /> : undefined}
         label={label}
       />
     ),
