@@ -6,7 +6,7 @@ figma.connect(
   'https://www.figma.com/design/0qqUZvCf7MIcrRuJQla85o/Components-3.0?node-id=135225-12196',
   {
     props: {
-      type: figma.enum('Type', {
+      variant: figma.enum('Type', {
         Primary: 'Primary',
         Secondary: 'Secondary',
         Tertiary: 'Tertiary',
@@ -26,9 +26,9 @@ figma.connect(
       iconTrailing: figma.boolean('Icon Trailing'),
       label: figma.string('Label'),
     },
-    example: ({ type, size, content, iconLeading, iconTrailing, label }) => (
+    example: ({ variant, size, content, iconLeading, iconTrailing, label }) => (
       <Button
-        type={type}
+        variant={variant}
         size={size}
         content={content}
         iconLeading={iconLeading}

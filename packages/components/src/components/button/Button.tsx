@@ -1,13 +1,19 @@
+import * as React from 'react'
+import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
-import type { ButtonProps } from './Button.types'
+import type { ButtonVariant, ButtonSize, ButtonContent } from './Button.types'
 
 const buttonVariants = cva(
   [
     'inline-flex items-center justify-center gap-[var(--eh-spacing-2)]',
     'font-[family-name:var(--eh-font-type-default)] font-[var(--eh-font-weight-medium)]',
     'rounded-[var(--eh-border-radius-md)]',
-    'border-t-[length:var(--eh-border-width-xs)] border-l-[length:var(--eh-border-width-xs)] border-r-[length:var(--eh-border-width-xs)] border-b-[length:var(--eh-border-width-md)] border-solid',
+    'border-solid',
+    'border-t-[length:var(--eh-border-width-xs)]',
+    'border-l-[length:var(--eh-border-width-xs)]',
+    'border-r-[length:var(--eh-border-width-xs)]',
+    'border-b-[length:var(--eh-border-width-md)]',
     'default-ring',
     'transition-colors duration-quick-1',
     'focus-visible:outline-none focus-visible:focus-ring',
@@ -16,30 +22,41 @@ const buttonVariants = cva(
   ],
   {
     variants: {
-      buttonType: {
+      variant: {
         Primary: [
-          'bg-[var(--eh-colour-bg-brand)] text-[var(--eh-colour-text-all-white)] border-[var(--eh-colour-border-brand-strong)]',
+          'bg-[var(--eh-colour-bg-brand)]',
+          'text-[var(--eh-colour-text-all-white)]',
+          'border-[var(--eh-colour-border-brand-strong)]',
           'hover:bg-[var(--eh-colour-bg-brand-hover)]',
           'active:bg-[var(--eh-colour-bg-brand-active)]',
-          'disabled:bg-[var(--eh-colour-bg-brand-disabled)] disabled:border-[var(--eh-colour-border-brand-disabled)]',
+          'disabled:bg-[var(--eh-colour-bg-brand-disabled)]',
+          'disabled:border-[var(--eh-colour-border-brand-disabled)]',
         ],
         Secondary: [
-          'bg-[var(--eh-colour-bg-default)] text-[var(--eh-colour-text-brand)] border-[var(--eh-colour-border-brand)]',
+          'bg-[var(--eh-colour-bg-default)]',
+          'text-[var(--eh-colour-text-brand)]',
+          'border-[var(--eh-colour-border-brand)]',
           'hover:bg-[var(--eh-colour-bg-neutral)]',
           'active:bg-[var(--eh-colour-bg-neutral-hover)]',
-          'disabled:text-[var(--eh-colour-text-brand-disabled)] disabled:border-[var(--eh-colour-border-brand-disabled)]',
+          'disabled:text-[var(--eh-colour-text-brand-disabled)]',
+          'disabled:border-[var(--eh-colour-border-brand-disabled)]',
         ],
         Tertiary: [
-          'bg-transparent text-[var(--eh-colour-text-brand)] border-transparent',
+          'bg-transparent',
+          'text-[var(--eh-colour-text-brand)]',
+          'border-transparent',
           'hover:bg-[var(--eh-colour-bg-neutral)]',
           'active:bg-[var(--eh-colour-bg-neutral-hover)]',
           'disabled:text-[var(--eh-colour-text-brand-disabled)]',
         ],
         Destructive: [
-          'bg-[var(--eh-colour-bg-error)] text-[var(--eh-colour-text-all-white)] border-[var(--eh-colour-border-error-strong)]',
+          'bg-[var(--eh-colour-bg-error)]',
+          'text-[var(--eh-colour-text-all-white)]',
+          'border-[var(--eh-colour-border-error-strong)]',
           'hover:bg-[var(--eh-colour-bg-error-hover)]',
           'active:bg-[var(--eh-colour-bg-error-active)]',
-          'disabled:bg-[var(--eh-colour-bg-error-disabled)] disabled:border-[var(--eh-colour-border-error-disabled)]',
+          'disabled:bg-[var(--eh-colour-bg-error-disabled)]',
+          'disabled:border-[var(--eh-colour-border-error-disabled)]',
         ],
       },
       size: {
@@ -50,7 +67,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      buttonType: 'Primary',
+      variant: 'Primary',
       size: 'md',
     },
   }
@@ -58,44 +75,77 @@ const buttonVariants = cva(
 
 const iconStyle = { width: 'var(--icon-size)', height: 'var(--icon-size)' }
 
-export function Button({
-  type: buttonType = 'Primary',
-  size = 'md',
-  content = 'Label + icon',
-  iconLeading = false,
-  iconTrailing = false,
-  leadIcon,
-  trailIcon,
-  icon,
-  label,
-  className,
-  children,
-  ...props
-}: ButtonProps) {
-  const isIconOnly = content === 'Icon only'
-
-  return (
-    <button
-      className={cn(
-        buttonVariants({ buttonType, size }),
-        isIconOnly && 'aspect-square',
-        className
-      )}
-      {...props}
-    >
-      {isIconOnly ? (
-        <span style={iconStyle}>{icon}</span>
-      ) : (
-        <>
-          {iconLeading && leadIcon && (
-            <span style={iconStyle}>{leadIcon}</span>
-          )}
-          {label ?? children}
-          {iconTrailing && trailIcon && (
-            <span style={iconStyle}>{trailIcon}</span>
-          )}
-        </>
-      )}
-    </button>
-  )
+export interface ButtonProps
+  extends ButtonPrimitive.Props,
+    VariantProps<typeof buttonVariants> {
+  /** Maps to Figma "Type" property */
+  variant?: ButtonVariant
+  /** Maps to Figma "Size" property */
+  size?: ButtonSize
+  /** Maps to Figma "Content" property — controls label vs icon-only mode */
+  content?: ButtonContent
+  /** Maps to Figma "Icon Leading" boolean — only visible when content is "Label + icon" */
+  iconLeading?: boolean
+  /** Maps to Figma "Icon Trailing" boolean — only visible when content is "Label + icon" */
+  iconTrailing?: boolean
+  /** Icon node rendered in the leading position */
+  leadIcon?: React.ReactNode
+  /** Icon node rendered in the trailing position */
+  trailIcon?: React.ReactNode
+  /** Icon rendered in icon-only mode — only visible when content is "Icon only" */
+  icon?: React.ReactNode
+  /** Button label text — only visible when content is "Label + icon" */
+  label?: string
 }
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      variant = 'Primary',
+      size = 'md',
+      content = 'Label + icon',
+      iconLeading = false,
+      iconTrailing = false,
+      leadIcon,
+      trailIcon,
+      icon,
+      label,
+      className,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const isIconOnly = content === 'Icon only'
+
+    return (
+      <ButtonPrimitive
+        data-slot="button"
+        ref={ref}
+        className={cn(
+          buttonVariants({ variant, size }),
+          isIconOnly && 'aspect-square',
+          className
+        )}
+        {...props}
+      >
+        {isIconOnly ? (
+          <span style={iconStyle}>{icon}</span>
+        ) : (
+          <>
+            {iconLeading && leadIcon && (
+              <span style={iconStyle}>{leadIcon}</span>
+            )}
+            {label ?? children}
+            {iconTrailing && trailIcon && (
+              <span style={iconStyle}>{trailIcon}</span>
+            )}
+          </>
+        )}
+      </ButtonPrimitive>
+    )
+  }
+)
+Button.displayName = 'Button'
+
+export { Button, buttonVariants }
