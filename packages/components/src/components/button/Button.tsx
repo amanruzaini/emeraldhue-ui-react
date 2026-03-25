@@ -59,10 +59,10 @@ const buttonVariants = cva(
         ],
       },
       size: {
-        xs: 'px-[var(--eh-spacing-4)] py-[var(--eh-spacing-2)] text-body-xs [--icon-size:12px]',
-        sm: 'px-[var(--eh-spacing-6)] py-[var(--eh-spacing-4)] text-body-sm [--icon-size:16px]',
-        md: 'p-[var(--eh-spacing-6)] text-body-sm [--icon-size:20px]',
-        lg: 'px-[var(--eh-spacing-8)] py-[var(--eh-spacing-5)] text-body-md [--icon-size:20px]',
+        xs: 'px-4 py-2 text-body-xs [--icon-size:var(--eh-icon-xs)]',
+        sm: 'px-6 py-4 text-body-sm [--icon-size:var(--eh-icon-sm)]',
+        md: 'p-6 text-body-sm [--icon-size:var(--eh-icon-md)]',
+        lg: 'px-8 py-5 text-body-md [--icon-size:var(--eh-icon-md)]',
       },
     },
     defaultVariants: {
