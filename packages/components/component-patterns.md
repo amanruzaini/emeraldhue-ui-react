@@ -23,10 +23,10 @@ Only split into more files if the component is genuinely large (e.g. DataTable, 
 
 ## When to use shadcn as a base
 
-| Situation | Approach |
-|---|---|
+| Situation                                                 | Approach                               |
+| --------------------------------------------------------- | -------------------------------------- |
 | Complex behaviour (focus trapping, keyboard nav, portals) | `npx shadcn add` then override visuals |
-| Simple behaviour, EH-specific anatomy | Write from scratch using CVA |
+| Simple behaviour, EH-specific anatomy                     | Write from scratch using CVA           |
 
 Components that use shadcn base: DropdownMenu, Dialog, Accordion, Select, Tooltip, Popover, NavigationMenu.
 
@@ -36,20 +36,24 @@ Components written from scratch: Button, Badge, Tag, Chip, and others with simpl
 
 ## CSS class rules
 
+### Important mindset framing
+
+Tailwind syntax is used in this repo, but values resolve from EH tokens, not Tailwind default docs.
+
 ### Colours — use EH utility class names
 
 Defined in `@layer utilities` in `packages/tokens/src/input.css`.
 
 ```tsx
 // ✅ correct
-'bg-brand'
-'text-all-white'
-'border-brand-strong'
-'hover:bg-brand-hover'
-'disabled:bg-brand-disabled'
+'bg-brand';
+'text-all-white';
+'border-brand-strong';
+'hover:bg-brand-hover';
+'disabled:bg-brand-disabled';
 
 // ❌ wrong — arbitrary value not needed for colours
-'bg-[var(--eh-colour-bg-brand)]'
+'bg-[var(--eh-colour-bg-brand)]';
 ```
 
 ### Spacing — use EH token utilities with awareness
@@ -59,16 +63,18 @@ EH spacing is mapped into Tailwind's theme via `--spacing-*` in `@theme inline`,
 However EH uses a 2px base scale while standard Tailwind uses 4px. The numbers mean different sizes:
 
 | Class | EH value at 100% | Standard Tailwind |
-|---|---|---|
-| p-4 | 8px | 16px |
-| p-6 | 12px | 24px |
-| p-8 | 16px | 32px |
+| ----- | ---------------- | ----------------- |
+| p-4   | 8px              | 16px              |
+| p-6   | 12px             | 24px              |
+| p-8   | 16px             | 32px              |
 
-Both forms are valid:
+Prefer named spacing utilities in component code:
 
 ```tsx
-'px-[var(--eh-spacing-6)]'  // ← explicit, self-documenting
-'px-6'                       // ← concise, resolves via EH token
+'p-4';
+'px-6';
+'py-4';
+'gap-2';
 ```
 
 Spacing tokens respond to `data-text-resize` switching automatically. Hardcoded pixel values do not.
@@ -78,9 +84,9 @@ Spacing tokens respond to `data-text-resize` switching automatically. Hardcoded 
 `.border-t`, `.border-r`, `.border-b`, `.border-l` are mapped to EH xs border width. The `-xs` suffix is an alias:
 
 ```tsx
-'border-t-xs'   // = 'border-t' ← same output
-'border-b-sm'   // ← bottom with sm width
-'border-solid'
+'border-t-xs'; // = 'border-t' ← same output
+'border-b-sm'; // ← bottom with sm width
+'border-solid';
 ```
 
 Prefer the explicit `-xs`/`-sm`/`-md` suffix form for clarity when mixing different widths on the same element.
@@ -91,56 +97,46 @@ Never use plain Tailwind `border-2`, `border-4` etc. — those are hardcoded pix
 
 ```tsx
 // ✅ correct — mapped via @theme inline
-'rounded-md'    // → var(--eh-border-radius-md)
-'rounded-lg'    // → var(--eh-border-radius-lg)
+'rounded-md'; // → var(--eh-border-radius-md)
+'rounded-lg'; // → var(--eh-border-radius-lg)
 ```
 
 ### Typography — use EH utility class names
 
 ```tsx
 // ✅ correct
-'text-body-xs'
-'text-body-sm'
-'text-body-md'
-'font-default'
-'font-weight-medium'
+'text-body-xs';
+'text-body-sm';
+'text-body-md';
+'font-default';
+'font-weight-medium';
 
 // ❌ wrong
-'text-sm'        // Tailwind default size, not EH
-'text-base'
+'text-sm'; // Tailwind default size, not EH
+'text-base';
 ```
 
-### Icon sizes — use EH token as CSS custom property
+`text-body-*` utilities already carry the EH line-height and letter-spacing from the theme. Do not add a second `tracking-*` class unless you are intentionally deviating from the text token.
+
+### Icon sizes — use EH utility class names
 
 ```tsx
 // ✅ correct — responds to text-resize switching
-'[--icon-size:var(--eh-icon-xs)]'
-'[--icon-size:var(--eh-icon-sm)]'
-'[--icon-size:var(--eh-icon-md)]'
-
-// Then on the icon wrapper span:
-const iconStyle = { width: 'var(--icon-size)', height: 'var(--icon-size)' }
-
-// ❌ wrong — hardcoded, doesn't respond to text-resize
-'[--icon-size:16px]'
+'size-icon-xs';
+'size-icon-sm';
+'size-icon-md';
 ```
 
-### Letter spacing — use EH token arbitrary value
-
-```tsx
-// ✅ correct
-'tracking-[var(--eh-font-letter-spacing-body-sm)]'
-'tracking-[var(--eh-font-letter-spacing-body-md)]'
-```
+The existing `icon-xs` / `icon-sm` / `icon-md` utilities are for `font-size`. Use `size-icon-*` when the wrapper needs tokenized `width` and `height`.
 
 ### States and rings — use EH utility class names
 
 ```tsx
 // ✅ correct — defined in @layer utilities in input.css
-'default-ring-bezel'
-'focus-visible:focus-ring-bezel'
-'hover:hover-ring-bezel'
-'disabled:no-ring'
+'default-ring-bezel';
+'focus-visible:focus-ring-bezel';
+'hover:hover-ring-bezel';
+'disabled:no-ring';
 ```
 
 ---
@@ -152,10 +148,10 @@ const iconStyle = { width: 'var(--icon-size)', height: 'var(--icon-size)' }
 ```tsx
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ ...props }, ref) => {
-    return <button ref={ref} {...props} />
-  }
-)
-Button.displayName = 'Button'
+    return <button ref={ref} {...props} />;
+  },
+);
+Button.displayName = 'Button';
 ```
 
 ### Always add data-slot
@@ -185,10 +181,10 @@ iconLeading?: boolean
 Figma states like Hover, Pressed, Focus are CSS concerns — handle them with pseudo-class utilities:
 
 ```tsx
-'hover:bg-brand-hover'
-'active:bg-brand-active'
-'focus-visible:focus-ring-bezel'
-'disabled:bg-brand-disabled'
+'hover:bg-brand-hover';
+'active:bg-brand-active';
+'focus-visible:focus-ring-bezel';
+'disabled:bg-brand-disabled';
 ```
 
 Never create a `state` prop on a React component.
@@ -223,11 +219,13 @@ const componentVariants = cva(
 `tailwind-merge` handles standard Tailwind class groups natively. Only register EH custom utility classes that `twMerge` doesn't recognise and merges incorrectly. Test first — register only if a class gets stripped.
 
 Classes that need registration:
+
 - Border width side groups (`border-t-xs`, `border-b-sm` etc.) because EH uses non-standard suffix names
 - `font-weight-medium` because it doesn't match twMerge's expected font-weight pattern
 - Any new EH utility that gets stripped unexpectedly
 
 Classes that do NOT need registration:
+
 - `bg-brand`, `bg-error` etc. — twMerge handles `bg-*` natively
 - `text-brand`, `text-default` etc. — twMerge handles `text-*` natively
 
@@ -250,8 +248,8 @@ const twMerge = extendTailwindMerge({
 Every component needs a `.figma.tsx` file for Code Connect. This file is never bundled — only used by the Figma CLI.
 
 ```tsx
-import figma from '@figma/code-connect'
-import { Button } from './Button'
+import figma from '@figma/code-connect';
+import { Button } from './Button';
 
 figma.connect(Button, 'FIGMA_NODE_URL', {
   props: {
@@ -273,7 +271,7 @@ figma.connect(Button, 'FIGMA_NODE_URL', {
       {label}
     </Button>
   ),
-})
+});
 ```
 
 ---
@@ -283,8 +281,13 @@ figma.connect(Button, 'FIGMA_NODE_URL', {
 Always export the component, its variants, and all types:
 
 ```ts
-export { Button, buttonVariants } from './Button'
-export type { ButtonProps, ButtonVariant, ButtonSize, ButtonContent } from './Button'
+export { Button, buttonVariants } from './Button';
+export type {
+  ButtonProps,
+  ButtonVariant,
+  ButtonSize,
+  ButtonContent,
+} from './Button';
 ```
 
 ---

@@ -656,6 +656,14 @@
     .icon-xl { font-size: var(--eh-icon-xl); }
     .icon-2xl { font-size: var(--eh-icon-2xl); }
     .icon-3xl { font-size: var(--eh-icon-3xl); }
+
+    .size-icon-xs { width: var(--eh-icon-xs); height: var(--eh-icon-xs); }
+    .size-icon-sm { width: var(--eh-icon-sm); height: var(--eh-icon-sm); }
+    .size-icon-md { width: var(--eh-icon-md); height: var(--eh-icon-md); }
+    .size-icon-lg { width: var(--eh-icon-lg); height: var(--eh-icon-lg); }
+    .size-icon-xl { width: var(--eh-icon-xl); height: var(--eh-icon-xl); }
+    .size-icon-2xl { width: var(--eh-icon-2xl); height: var(--eh-icon-2xl); }
+    .size-icon-3xl { width: var(--eh-icon-3xl); height: var(--eh-icon-3xl); }
 }
 
 /* Shadows */

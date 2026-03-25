@@ -6,11 +6,6 @@ export type ButtonVariant = 'Primary' | 'Secondary' | 'Tertiary' | 'Destructive'
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 export type ButtonContent = 'Label + icon' | 'Icon only'
 
-const focusRingBezelClass =
-  'focus-visible:[box-shadow:0px_1px_0px_0px_inset_rgba(255,255,255,0.5),0px_0px_0px_2px_var(--eh-colour-border-focus-inner),0px_0px_0px_5px_var(--eh-colour-border-focus-outer)]'
-const focusRingClass =
-  'focus-visible:[box-shadow:0px_0px_0px_2px_var(--eh-colour-border-focus-inner),0px_0px_0px_5px_var(--eh-colour-border-focus-outer)]'
-
 export const buttonVariants = cva(
   [
     'inline-flex items-center justify-center',
@@ -31,10 +26,10 @@ export const buttonVariants = cva(
           'default-ring-bezel',
           'hover:bg-brand-hover',
           'hover:hover-ring-bezel',
-          focusRingBezelClass,
+          'focus-visible:focus-ring-bezel',
           'active:bg-brand-active',
-          'disabled:bg-[var(--eh-colour-bg-brand-disabled)]',
-          'disabled:border-[var(--eh-colour-border-brand-disabled)]',
+          'disabled:bg-brand-disabled',
+          'disabled:border-brand-disabled',
         ],
         Secondary: [
           'bg-default',
@@ -44,20 +39,20 @@ export const buttonVariants = cva(
           'default-ring-bezel',
           'hover:bg-neutral',
           'hover:hover-ring-bezel',
-          focusRingBezelClass,
+          'focus-visible:focus-ring-bezel',
           'active:bg-neutral-hover',
-          'disabled:bg-[var(--eh-colour-bg-disabled)]',
-          'disabled:text-[var(--eh-colour-text-inverted-disabled)]',
-          'disabled:border-[var(--eh-colour-border-disabled)]',
+          'disabled:bg-disabled',
+          'disabled:text-inverted-disabled',
+          'disabled:border-disabled',
         ],
         Tertiary: [
           'bg-transparent',
           'text-strong',
           'hover:bg-neutral',
           'active:bg-neutral-hover',
-          'focus-visible:bg-[var(--eh-colour-bg-default)]',
-          focusRingClass,
-          'disabled:text-[var(--eh-colour-text-disabled)]',
+          'focus-visible:bg-default',
+          'focus-visible:focus-ring',
+          'disabled:text-disabled',
         ],
         Destructive: [
           'bg-error',
@@ -67,43 +62,39 @@ export const buttonVariants = cva(
           'default-ring-bezel',
           'hover:bg-error-hover',
           'hover:hover-ring-bezel',
-          focusRingBezelClass,
+          'focus-visible:focus-ring-bezel',
           'active:bg-error-active',
-          'disabled:bg-[var(--eh-colour-bg-error-disabled)]',
-          'disabled:border-[var(--eh-colour-border-error-disabled)]',
+          'disabled:bg-error-disabled',
+          'disabled:border-error-disabled',
         ],
       },
       size: {
-        xs: 'border-b-xs p-[var(--eh-spacing-1)] text-body-xs tracking-[var(--eh-font-letter-spacing-body-xs)] [--icon-size:var(--eh-icon-sm)]',
-        sm: 'border-b-sm [--icon-size:var(--eh-icon-sm)]',
-        md: 'border-b-md p-[var(--eh-spacing-6)] text-body-sm tracking-[var(--eh-font-letter-spacing-body-sm)] [--icon-size:var(--eh-icon-md)]',
-        lg: 'border-b-lg px-[var(--eh-spacing-6)] py-[var(--eh-spacing-7)] text-body-md tracking-[var(--eh-font-letter-spacing-body-md)] [--icon-size:var(--eh-icon-md)]',
+        xs: 'border-b-xs p-1 text-body-xs',
+        sm: 'border-b-sm',
+        md: 'border-b-md p-6 text-body-sm',
+        lg: 'border-b-lg px-6 py-7 text-body-md',
       },
     },
     compoundVariants: [
       {
         variant: 'Primary',
         size: 'sm',
-        className:
-          'px-[var(--eh-spacing-6)] py-[var(--eh-spacing-4)] text-body-sm tracking-[var(--eh-font-letter-spacing-body-sm)]',
+        className: 'px-6 py-4 text-body-sm',
       },
       {
         variant: 'Secondary',
         size: 'sm',
-        className:
-          'p-[var(--eh-spacing-4)] text-body-xs tracking-[var(--eh-font-letter-spacing-body-xs)]',
+        className: 'p-4 text-body-xs',
       },
       {
         variant: 'Tertiary',
         size: 'sm',
-        className:
-          'p-[var(--eh-spacing-4)] text-body-sm tracking-[var(--eh-font-letter-spacing-body-sm)]',
+        className: 'p-4 text-body-sm',
       },
       {
         variant: 'Destructive',
         size: 'sm',
-        className:
-          'px-[var(--eh-spacing-6)] py-[var(--eh-spacing-4)] text-body-xs tracking-[var(--eh-font-letter-spacing-body-xs)]',
+        className: 'px-6 py-4 text-body-xs',
       },
     ],
     defaultVariants: {
@@ -113,7 +104,12 @@ export const buttonVariants = cva(
   }
 )
 
-const iconStyle = { width: 'var(--icon-size)', height: 'var(--icon-size)' }
+const iconSizeClassBySize: Record<ButtonSize, string> = {
+  xs: 'size-icon-sm',
+  sm: 'size-icon-sm',
+  md: 'size-icon-md',
+  lg: 'size-icon-md',
+}
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -158,6 +154,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const isIconOnly = content === 'Icon only'
     const buttonLabel = label ?? children
+    const iconSizeClass = iconSizeClassBySize[size]
 
     return (
       <button
@@ -166,23 +163,23 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant, size }),
           isIconOnly && 'aspect-square',
-          !isIconOnly && 'gap-[var(--eh-spacing-2)]',
+          !isIconOnly && 'gap-2',
           className
         )}
         {...props}
       >
         {isIconOnly ? (
-          <span style={iconStyle}>{icon}</span>
+          <span className={cn('shrink-0', iconSizeClass)}>{icon}</span>
         ) : (
           <>
             {iconLeading && leadIcon && (
-              <span className="shrink-0" style={iconStyle}>
+              <span className={cn('shrink-0', iconSizeClass)}>
                 {leadIcon}
               </span>
             )}
             <span className="whitespace-nowrap">{buttonLabel}</span>
             {iconTrailing && trailIcon && (
-              <span className="shrink-0" style={iconStyle}>
+              <span className={cn('shrink-0', iconSizeClass)}>
                 {trailIcon}
               </span>
             )}
