@@ -6,6 +6,11 @@ export type ButtonVariant = 'Primary' | 'Secondary' | 'Tertiary' | 'Destructive'
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 export type ButtonContent = 'Label + icon' | 'Icon only'
 
+const focusRingBezelClass =
+  'focus-visible:[box-shadow:0px_1px_0px_0px_inset_rgba(255,255,255,0.5),0px_0px_0px_2px_var(--eh-colour-border-focus-inner),0px_0px_0px_5px_var(--eh-colour-border-focus-outer)]'
+const focusRingClass =
+  'focus-visible:[box-shadow:0px_0px_0px_2px_var(--eh-colour-border-focus-inner),0px_0px_0px_5px_var(--eh-colour-border-focus-outer)]'
+
 export const buttonVariants = cva(
   [
     'inline-flex items-center justify-center',
@@ -26,10 +31,10 @@ export const buttonVariants = cva(
           'default-ring-bezel',
           'hover:bg-brand-hover',
           'hover:hover-ring-bezel',
-          'focus-visible:focus-ring-bezel',
+          focusRingBezelClass,
           'active:bg-brand-active',
-          'disabled:bg-brand-disabled',
-          'disabled:border-brand-disabled',
+          'disabled:bg-[var(--eh-colour-bg-brand-disabled)]',
+          'disabled:border-[var(--eh-colour-border-brand-disabled)]',
         ],
         Secondary: [
           'bg-default',
@@ -39,20 +44,20 @@ export const buttonVariants = cva(
           'default-ring-bezel',
           'hover:bg-neutral',
           'hover:hover-ring-bezel',
-          'focus-visible:focus-ring-bezel',
+          focusRingBezelClass,
           'active:bg-neutral-hover',
-          'disabled:bg-disabled',
-          'disabled:text-inverted-disabled',
-          'disabled:border-disabled',
+          'disabled:bg-[var(--eh-colour-bg-disabled)]',
+          'disabled:text-[var(--eh-colour-text-inverted-disabled)]',
+          'disabled:border-[var(--eh-colour-border-disabled)]',
         ],
         Tertiary: [
           'bg-transparent',
           'text-strong',
           'hover:bg-neutral',
           'active:bg-neutral-hover',
-          'focus-visible:bg-default',
-          'focus-visible:focus-ring',
-          'disabled:text-disabled',
+          'focus-visible:bg-[var(--eh-colour-bg-default)]',
+          focusRingClass,
+          'disabled:text-[var(--eh-colour-text-disabled)]',
         ],
         Destructive: [
           'bg-error',
@@ -62,10 +67,10 @@ export const buttonVariants = cva(
           'default-ring-bezel',
           'hover:bg-error-hover',
           'hover:hover-ring-bezel',
-          'focus-visible:focus-ring-bezel',
+          focusRingBezelClass,
           'active:bg-error-active',
-          'disabled:bg-error-disabled',
-          'disabled:border-error-disabled',
+          'disabled:bg-[var(--eh-colour-bg-error-disabled)]',
+          'disabled:border-[var(--eh-colour-border-error-disabled)]',
         ],
       },
       size: {
