@@ -61,6 +61,18 @@ const twMerge = extendTailwindMerge({
       'font-family': ['font-default'],
       'font-weight': ['font-weight-medium'],
       'font-size': ['text-body-xs', 'text-body-sm', 'text-body-md'],
+      'icon-color': [
+        'icon-default',
+        'icon-weak',
+        'icon-strong',
+        'icon-disabled',
+        'icon-all-white',
+        'icon-all-black',
+        'icon-brand',
+        'icon-brand-inverted',
+        'icon-error',
+        'icon-error-inverted',
+      ],
       size: [
         'size-icon-xs',
         'size-icon-sm',

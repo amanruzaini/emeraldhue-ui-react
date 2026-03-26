@@ -11,7 +11,7 @@ export const buttonVariants = cva(
     'inline-flex items-center justify-center',
     'font-default font-weight-medium',
     'rounded-md',
-    'transition-colors duration-quick-1',
+    'transition-all duration-quick-3',
     'focus-visible:outline-none',
     'disabled:no-ring disabled:pointer-events-none disabled:cursor-not-allowed',
   ],

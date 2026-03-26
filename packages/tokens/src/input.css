@@ -197,7 +197,7 @@
     .border-default { border-color: var(--eh-colour-border-default); }
     .border-weak { border-color: var(--eh-colour-border-weak); }
     .border-strong { border-color: var(--eh-colour-border-strong); }
-    .border-disabled { border-color: var(--eh-colour-border-disabled); }
+    .border-disabled, .disabled\:border-disabled:disabled { border-color: var(--eh-colour-border-disabled); }
     .border-transparent { border-color: var(--eh-colour-border-transparent); }
     .border-focus-inner { border-color: var(--eh-colour-border-focus-inner); }
     .border-focus-outer { border-color: var(--eh-colour-border-focus-outer); }
@@ -210,7 +210,7 @@
     .border-success-hover { border-color: var(--eh-colour-border-success-hover); }
     .border-success-active { border-color: var(--eh-colour-border-success-active); }
     .border-success-focus { border-color: var(--eh-colour-border-success-focus); }
-    .border-success-disabled { border-color: var(--eh-colour-border-success-disabled); }
+    .border-success-disabled, .disabled\:border-success-disabled:disabled { border-color: var(--eh-colour-border-success-disabled); }
     .border-success-weak { border-color: var(--eh-colour-border-success-weak); }
     .border-success-strong { border-color: var(--eh-colour-border-success-strong); }
     .border-warning { border-color: var(--eh-colour-border-warning); }
@@ -221,7 +221,7 @@
     .border-info-hover { border-color: var(--eh-colour-border-info-hover); }
     .border-info-active { border-color: var(--eh-colour-border-info-active); }
     .border-info-focus { border-color: var(--eh-colour-border-info-focus); }
-    .border-info-disabled { border-color: var(--eh-colour-border-info-disabled); }
+    .border-info-disabled, .disabled\:border-info-disabled:disabled { border-color: var(--eh-colour-border-info-disabled); }
     .border-info-weak { border-color: var(--eh-colour-border-info-weak); }
     .border-info-strong { border-color: var(--eh-colour-border-info-strong); }
     .border-error { border-color: var(--eh-colour-border-error); }
@@ -229,7 +229,7 @@
     .border-error-hover { border-color: var(--eh-colour-border-error-hover); }
     .border-error-active { border-color: var(--eh-colour-border-error-active); }
     .border-error-focus { border-color: var(--eh-colour-border-error-focus); }
-    .border-error-disabled { border-color: var(--eh-colour-border-error-disabled); }
+    .border-error-disabled, .disabled\:border-error-disabled:disabled { border-color: var(--eh-colour-border-error-disabled); }
     .border-error-weak { border-color: var(--eh-colour-border-error-weak); }
     .border-error-strong { border-color: var(--eh-colour-border-error-strong); }
     .border-neutral-selected-toggle { border-color: var(--eh-colour-border-neutral-selected-toggle); }
@@ -243,7 +243,7 @@
     .border-brand-hover-ring { border-color: var(--eh-colour-border-brand-hover-ring); }
     .border-brand-hover-buttongroup { border-color: var(--eh-colour-border-brand-hover-buttongroup); }
     .border-brand-focus-tabline { border-color: var(--eh-colour-border-brand-focus-tabline); }
-    .border-brand-disabled { border-color: var(--eh-colour-border-brand-disabled); }
+    .border-brand-disabled, .disabled\:border-brand-disabled:disabled { border-color: var(--eh-colour-border-brand-disabled); }
     .border-brand-progressbar { border-color: var(--eh-colour-border-brand-progressbar); }
     .border-brand-tooltip-black { border-color: var(--eh-colour-border-brand-tooltip-black); }
     .border-brand-tooltip-white { border-color: var(--eh-colour-border-brand-tooltip-white); }
@@ -252,7 +252,7 @@
     .border-accent-hover { border-color: var(--eh-colour-border-accent-hover); }
     .border-accent-active { border-color: var(--eh-colour-border-accent-active); }
     .border-accent-focus { border-color: var(--eh-colour-border-accent-focus); }
-    .border-accent-disabled { border-color: var(--eh-colour-border-accent-disabled); }
+    .border-accent-disabled, .disabled\:border-accent-disabled:disabled { border-color: var(--eh-colour-border-accent-disabled); }
     .border-accent-weak { border-color: var(--eh-colour-border-accent-weak); }
     .border-accent-strong { border-color: var(--eh-colour-border-accent-strong); }
 
@@ -277,7 +277,7 @@
     .bg-success-hover, .hover\:bg-success-hover:hover { background-color: var(--eh-colour-bg-success-hover); }
     .bg-success-active, .active\:bg-success-active:active { background-color: var(--eh-colour-bg-success-active); }
     .bg-success-focus, .focus\:bg-success-focus:focus { background-color: var(--eh-colour-bg-success-focus); }
-    .bg-success-disabled { background-color: var(--eh-colour-bg-success-disabled); }
+    .bg-success-disabled, .disabled\:bg-success-disabled:disabled { background-color: var(--eh-colour-bg-success-disabled); }
     .bg-success-inverted { background-color: var(--eh-colour-bg-success-inverted); }
     .bg-success-container { background-color: var(--eh-colour-bg-success-container); }
     .bg-success-weak { background-color: var(--eh-colour-bg-success-weak); }
@@ -286,7 +286,7 @@
     .bg-warning-hover, .hover\:bg-warning-hover:hover { background-color: var(--eh-colour-bg-warning-hover); }
     .bg-warning-active, .active\:bg-warning-active:active { background-color: var(--eh-colour-bg-warning-active); }
     .bg-warning-focus, .focus\:bg-warning-focus:focus { background-color: var(--eh-colour-bg-warning-focus); }
-    .bg-warning-disabled { background-color: var(--eh-colour-bg-warning-disabled); }
+    .bg-warning-disabled, .disabled\:bg-warning-disabled:disabled { background-color: var(--eh-colour-bg-warning-disabled); }
     .bg-warning-inverted { background-color: var(--eh-colour-bg-warning-inverted); }
     .bg-warning-inverted-active, .active\:bg-warning-inverted-active:active { background-color: var(--eh-colour-bg-warning-inverted-active); }
     .bg-warning-container { background-color: var(--eh-colour-bg-warning-container); }
@@ -295,7 +295,7 @@
     .bg-info-hover, .hover\:bg-info-hover:hover { background-color: var(--eh-colour-bg-info-hover); }
     .bg-info-active, .active\:bg-info-active:active { background-color: var(--eh-colour-bg-info-active); }
     .bg-info-focus, .focus\:bg-info-focus:focus { background-color: var(--eh-colour-bg-info-focus); }
-    .bg-info-disabled { background-color: var(--eh-colour-bg-info-disabled); }
+    .bg-info-disabled, .disabled\:bg-info-disabled:disabled { background-color: var(--eh-colour-bg-info-disabled); }
     .bg-info-inverted { background-color: var(--eh-colour-bg-info-inverted); }
     .bg-info-inverted-active { background-color: var(--eh-colour-bg-info-inverted-active); }
     .bg-info-container { background-color: var(--eh-colour-bg-info-container); }
@@ -305,7 +305,7 @@
     .bg-error-hover, .hover\:bg-error-hover:hover { background-color: var(--eh-colour-bg-error-hover); }
     .bg-error-active, .active\:bg-error-active:active { background-color: var(--eh-colour-bg-error-active); }
     .bg-error-focus, .focus\:bg-error-focus:focus { background-color: var(--eh-colour-bg-error-focus); }
-    .bg-error-disabled { background-color: var(--eh-colour-bg-error-disabled); }
+    .bg-error-disabled, .disabled\:bg-error-disabled:disabled { background-color: var(--eh-colour-bg-error-disabled); }
     .bg-error-inverted { background-color: var(--eh-colour-bg-error-inverted); }
     .bg-error-inverted-active, .active\:bg-error-inverted-active:active { background-color: var(--eh-colour-bg-error-inverted-active); }
     .bg-error-container { background-color: var(--eh-colour-bg-error-container); }
@@ -319,7 +319,7 @@
     .bg-brand-inverted-progressbar { background-color: var(--eh-colour-bg-brand-inverted-progressbar); }
     .bg-brand-inverted-button { background-color: var(--eh-colour-bg-brand-inverted-button); }
     .bg-brand-inverted-datepicker { background-color: var(--eh-colour-bg-brand-inverted-datepicker); }
-    .bg-brand-disabled { background-color: var(--eh-colour-bg-brand-disabled); }
+    .bg-brand-disabled, .disabled\:bg-brand-disabled:disabled { background-color: var(--eh-colour-bg-brand-disabled); }
     .bg-brand-step { background-color: var(--eh-colour-bg-brand-step); }
     .bg-brand-stepline { background-color: var(--eh-colour-bg-brand-stepline); }
     .bg-brand-progressbar { background-color: var(--eh-colour-bg-brand-progressbar); }
@@ -328,7 +328,7 @@
     .bg-accent-hover, .hover\:bg-accent-hover:hover { background-color: var(--eh-colour-bg-accent-hover); }
     .bg-accent-active, .active\:bg-accent-active:active { background-color: var(--eh-colour-bg-accent-active); }
     .bg-accent-focus, .focus\:bg-accent-focus:focus { background-color: var(--eh-colour-bg-accent-focus); }
-    .bg-accent-disabled { background-color: var(--eh-colour-bg-accent-disabled); }
+    .bg-accent-disabled, .disabled\:bg-accent-disabled:disabled { background-color: var(--eh-colour-bg-accent-disabled); }
     .bg-accent-inverted { background-color: var(--eh-colour-bg-accent-inverted); }
     .bg-accent-inverted-active, .active\:bg-accent-inverted-active:active { background-color: var(--eh-colour-bg-accent-inverted-active); }
     .bg-accent-weak { background-color: var(--eh-colour-bg-accent-weak); }
@@ -556,14 +556,14 @@
     }
     
     /* Focus Ring Default */
-    .focus-ring, .focus\:focus-ring:focus {
+    .focus-ring, .focus\:focus-ring:focus, .focus-visible\:focus-ring:focus {
         box-shadow:
             0px 0px 0px 2px var(--eh-colour-border-focus-inner),
             0px 0px 0px 5px var(--eh-colour-border-focus-outer);
     }
     
     /* Focus Ring with Bezel */
-    .focus-ring-bezel, .focus\:focus-ring-bezel:focus {
+    .focus-ring-bezel, .focus\:focus-ring-bezel:focus, .focus-visible\:focus-ring-bezel:focus {
         box-shadow: 
             0px 1px 0px 0px inset rgba(255,255,255,0.5),
             0px 0px 0px 2px var(--eh-colour-border-focus-inner),
@@ -576,7 +576,7 @@
     }
 
     /* No Ring */
-    .no-ring, .focus\:no-ring:focus, .hover\:no-ring:hover, .active\:no-ring:active {
+    .no-ring, .focus\:no-ring:focus, .focus-visible\:no-ring:focus, .hover\:no-ring:hover, .active\:no-ring:active, .disabled\:no-ring:disabled {
         box-shadow: none;
     }
 }
