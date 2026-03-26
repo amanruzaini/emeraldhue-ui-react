@@ -3,7 +3,6 @@ export {
   avatarWrapperVariants,
   avatarInnerVariants,
   avatarInitialsVariants,
-  avatarIndicatorVariants,
 } from './AvatarSingle'
 export type {
   AvatarSingleProps,

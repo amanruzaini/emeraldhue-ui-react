@@ -121,34 +121,21 @@ export const avatarInitialsVariants = cva(
 )
 
 // ---------------------------------------------------------------------------
-// CVA — Indicator
+// Indicator size maps
 // ---------------------------------------------------------------------------
 
-export const avatarIndicatorVariants = cva(
-  [
-    'absolute bottom-[2px] right-[2px]',
-    'rounded-full',
-    'border-solid border-[length:var(--eh-border-width-sm)] border-neutral-avatargroup',
-  ],
-  {
-    variants: {
-      size: {
-        xs: 'size-[6px]',
-        sm: 'size-[8px]',
-        md: 'size-[10px]',
-        lg: 'size-[12px]',
-        xl: 'size-[14px]',
-        '2xl': 'size-[16px]',
-        '3xl': 'size-[16px]',
-        '4xl': 'size-[16px]',
-      },
-    },
-    defaultVariants: { size: 'md' },
-  }
-)
+const statusIndicatorSizes: Record<AvatarSingleSize, string> = {
+  xs: 'size-[6px]',
+  sm: 'size-[8px]',
+  md: 'size-[10px]',
+  lg: 'size-[12px]',
+  xl: 'size-[14px]',
+  '2xl': 'size-[16px]',
+  '3xl': 'size-[16px]',
+  '4xl': 'size-[16px]',
+}
 
-// Company logo indicator uses different sizes than status dot
-const companyIconSizes: Record<AvatarSingleSize, string> = {
+const logoIndicatorSizes: Record<AvatarSingleSize, string> = {
   xs: 'size-[10px]',
   sm: 'size-[12px]',
   md: 'size-[14px]',
@@ -157,41 +144,6 @@ const companyIconSizes: Record<AvatarSingleSize, string> = {
   '2xl': 'size-[20px]',
   '3xl': 'size-[22px]',
   '4xl': 'size-[24px]',
-}
-
-// ---------------------------------------------------------------------------
-// Internal sub-components
-// ---------------------------------------------------------------------------
-
-function StatusDot({ online }: { online: boolean }) {
-  return (
-    <div
-      className={cn(
-        'size-full rounded-full',
-        online ? 'bg-success' : 'bg-neutral'
-      )}
-    />
-  )
-}
-
-function CompanyLogo({
-  size,
-  logoIcon,
-}: {
-  size: AvatarSingleSize
-  logoIcon: React.ReactNode
-}) {
-  return (
-    <div
-      className={cn(
-        'flex items-center justify-center',
-        'rounded-full bg-brand',
-        companyIconSizes[size]
-      )}
-    >
-      {logoIcon}
-    </div>
-  )
 }
 
 // ---------------------------------------------------------------------------
@@ -244,12 +196,20 @@ const AvatarSingle = React.forwardRef<HTMLDivElement, AvatarSingleProps>(
         {indicator && (
           <div
             data-slot="avatar-indicator"
-            className={cn(avatarIndicatorVariants({ size }))}
+            className={cn(
+              'absolute bottom-[2px] right-[2px]',
+              'overflow-clip rounded-full',
+              'border-solid border-[length:var(--eh-border-width-sm)] border-neutral-avatargroup',
+              indicatorType === 'Logo' ? logoIndicatorSizes[size] : statusIndicatorSizes[size],
+              indicatorType === 'Status'
+                ? (online ? 'bg-success' : 'bg-neutral')
+                : 'bg-brand',
+            )}
           >
-            {indicatorType === 'Status' ? (
-              <StatusDot online={online} />
-            ) : (
-              <CompanyLogo size={size} logoIcon={logoIcon} />
+            {indicatorType === 'Logo' && logoIcon && (
+              <div className="flex items-center justify-center size-full text-all-white">
+                {logoIcon}
+              </div>
             )}
           </div>
         )}
