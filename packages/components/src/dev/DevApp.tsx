@@ -33,6 +33,7 @@ import type {
 } from '../components/badge-semantic'
 import { Button } from '../components/button'
 import type { ButtonSize, ButtonVariant } from '../components/button'
+import { CheckboxField } from '../components/checkbox-field'
 import { CheckboxInput } from '../components/checkbox-input'
 import type { CheckboxInputSize } from '../components/checkbox-input'
 
@@ -333,6 +334,66 @@ export function DevApp() {
                     disabled
                     readOnly
                   />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </PreviewSection>
+
+      <PreviewSection title="Checkbox Field">
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={cellStyle}>Size</th>
+              <th style={cellStyle}>Unchecked</th>
+              <th style={cellStyle}>Checked</th>
+              <th style={cellStyle}>Indeterminate</th>
+              <th style={cellStyle}>Disabled</th>
+            </tr>
+          </thead>
+          <tbody>
+            {checkboxSizes.map((size) => (
+              <tr key={`field-${size}`}>
+                <td style={{ ...cellStyle, fontWeight: 700 }}>{size}</td>
+                <td style={cellStyle}>
+                  <CheckboxField
+                    aria-label={`${size} unchecked remember me checkbox`}
+                    size={size}
+                    description="Save my login details for next time."
+                  >
+                    Remember Me
+                  </CheckboxField>
+                </td>
+                <td style={cellStyle}>
+                  <CheckboxField
+                    aria-label={`${size} checked remember me checkbox`}
+                    size={size}
+                    defaultChecked
+                    description="Save my login details for next time."
+                  >
+                    Remember Me
+                  </CheckboxField>
+                </td>
+                <td style={cellStyle}>
+                  <CheckboxField
+                    aria-label={`${size} indeterminate remember me checkbox`}
+                    size={size}
+                    indeterminate
+                    description="Save my login details for next time."
+                  >
+                    Remember Me
+                  </CheckboxField>
+                </td>
+                <td style={cellStyle}>
+                  <CheckboxField
+                    aria-label={`${size} disabled remember me checkbox`}
+                    size={size}
+                    disabled
+                    description="Save my login details for next time."
+                  >
+                    Remember Me
+                  </CheckboxField>
                 </td>
               </tr>
             ))}
