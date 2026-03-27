@@ -8,7 +8,7 @@ export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 export const buttonVariants = cva(
   [
     'inline-flex items-center justify-center',
-    'font-default font-weight-medium',
+    'font-default font-medium',
     'rounded-md',
     'transition-all duration-quick-3',
     'focus-visible:outline-none',

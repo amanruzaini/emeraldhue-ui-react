@@ -1,4 +1,4 @@
-import figma from '@figma/code-connect'
+import figma from '@figma/code-connect/react'
 import { CheckboxField } from './CheckboxField'
 
 figma.connect(
@@ -6,25 +6,20 @@ figma.connect(
   'https://www.figma.com/design/0qqUZvCf7MIcrRuJQla85o/Components-3.0?node-id=132812-50342&m=dev',
   {
     props: {
-      state: figma.enum('State', {
-        Default: 'Default',
-        Hover: 'Hover',
-        Focus: 'Focus',
-        Disabled: 'Disabled',
-      }),
       size: figma.enum('Size', {
         sm: 'sm',
         md: 'md',
       }),
       checked: figma.boolean('Checked'),
       indeterminate: figma.boolean('Indeterminate'),
+      disabled: figma.enum('State', { Disabled: true }),
     },
-    example: ({ state, size, checked, indeterminate }) => (
+    example: ({ size, checked, indeterminate, disabled }) => (
       <CheckboxField
         size={size}
         checked={checked}
         indeterminate={indeterminate}
-        disabled={state === 'Disabled'}
+        disabled={disabled}
         readOnly
         description="Save my login details for next time."
       >

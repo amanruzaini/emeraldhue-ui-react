@@ -59,10 +59,12 @@ const descriptionTextVariants = cva(['font-default text-default'], {
 })
 
 export interface CheckboxFieldProps
-  extends Omit<CheckboxInputProps, 'className'>,
-    VariantProps<typeof checkboxFieldVariants> {
+  extends Omit<CheckboxInputProps, 'className' | 'disabled'>,
+    Omit<VariantProps<typeof checkboxFieldVariants>, 'disabled'> {
   /** Maps to Figma "Size" property */
   size?: CheckboxFieldSize
+  /** Matches the disabled state for both the field chrome and nested input */
+  disabled?: boolean
   /** Maps to the checkbox field label text in Figma */
   children: React.ReactNode
   /** Maps to the supporting description text in Figma */

@@ -37,7 +37,7 @@ export const buttonGroupItemVariants = cva([
   // Sizing
   'h-[36px] max-h-[36px] px-6 py-4',
   // Typography
-  'text-body-xs font-weight-medium text-strong text-center whitespace-nowrap',
+  'text-body-xs font-medium text-strong text-center whitespace-nowrap',
   // Border
   'border-solid border-xs border-weak',
   // Transitions

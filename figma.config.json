@@ -1,0 +1,24 @@
+{
+  "codeConnect": {
+    "parser": "react",
+    "include": [
+      "packages/components/src/**/*.ts",
+      "packages/components/src/**/*.tsx"
+    ],
+    "exclude": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "packages/components/src/dev/**"
+    ],
+    "label": "React",
+    "language": "tsx",
+    "defaultBranch": "master",
+    "interactiveSetupFigmaFileUrl": "https://www.figma.com/design/0qqUZvCf7MIcrRuJQla85o/Components-3.0",
+    "paths": {
+      "@eh/tokens": ["packages/tokens/src"],
+      "@eh/tokens/*": ["packages/tokens/src/*"],
+      "@eh/components": ["packages/components/src"],
+      "@eh/components/*": ["packages/components/src/*"]
+    }
+  }
+}

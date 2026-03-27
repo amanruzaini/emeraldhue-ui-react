@@ -443,7 +443,7 @@ const twMerge = extendTailwindMerge({
 Every component needs a `.figma.tsx` file for Code Connect. This file is never bundled — only used by the Figma CLI.
 
 ```tsx
-import figma from '@figma/code-connect';
+import figma from '@figma/code-connect/react';
 import { Button } from './Button';
 
 figma.connect(Button, 'FIGMA_NODE_URL', {

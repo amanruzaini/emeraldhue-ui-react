@@ -33,6 +33,7 @@ import type {
 } from '../components/badge-semantic'
 import { Button } from '../components/button'
 import type { ButtonSize, ButtonVariant } from '../components/button'
+import { ButtonGroup, ButtonGroupItem } from '../components/button-group'
 import { CheckboxField } from '../components/checkbox-field'
 import { CheckboxInput } from '../components/checkbox-input'
 import type { CheckboxInputSize } from '../components/checkbox-input'
@@ -339,6 +340,36 @@ export function DevApp() {
             ))}
           </tbody>
         </table>
+      </PreviewSection>
+
+      <PreviewSection title="Button Group">
+        <div style={cardGridStyle}>
+          <PreviewCard title="Default">
+            <ButtonGroup>
+              <ButtonGroupItem>Overview</ButtonGroupItem>
+              <ButtonGroupItem>Details</ButtonGroupItem>
+              <ButtonGroupItem>Activity</ButtonGroupItem>
+            </ButtonGroup>
+          </PreviewCard>
+
+          <PreviewCard title="With Icons">
+            <ButtonGroup>
+              <ButtonGroupItem startIcon={<PlaceholderIcon />}>Filter</ButtonGroupItem>
+              <ButtonGroupItem>Sort</ButtonGroupItem>
+              <ButtonGroupItem endIcon={<PlaceholderIcon />}>Export</ButtonGroupItem>
+            </ButtonGroup>
+          </PreviewCard>
+
+          <PreviewCard title="View Only + Disabled">
+            <ButtonGroup>
+              <ButtonGroupItem viewOnly startIcon={<PlaceholderIcon />}>
+                Current
+              </ButtonGroupItem>
+              <ButtonGroupItem disabled>Disabled</ButtonGroupItem>
+              <ButtonGroupItem>Available</ButtonGroupItem>
+            </ButtonGroup>
+          </PreviewCard>
+        </div>
       </PreviewSection>
 
       <PreviewSection title="Checkbox Field">

@@ -120,7 +120,7 @@ const BadgeNotificationNonSemantic = React.forwardRef<HTMLSpanElement, BadgeNoti
               'whitespace-nowrap text-center',
               // Typography
               'text-[length:var(--eh-font-size-body-sm)]',
-              'leading-[var(--eh-font-line-height-body-xs)]',
+              'leading-[var(--eh-font-line-height-body-sm)]',
               'tracking-[var(--eh-font-letter-spacing-body-sm)]',
               'font-default',
               'font-ui',

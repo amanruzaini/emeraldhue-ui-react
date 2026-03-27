@@ -7,6 +7,9 @@
   ],
   "main": "index.js",
   "scripts": {
+    "code-connect:parse": "figma connect parse --config figma.config.json",
+    "code-connect:publish": "figma connect publish --config figma.config.json",
+    "code-connect:unpublish": "figma connect unpublish --config figma.config.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,7 +17,9 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@figma/code-connect": "^1.4.1",
     "@tailwindcss/vite": "^4.2.2",
+    "typescript": "^5.9.3",
     "vite": "^8.0.2"
   }
 }

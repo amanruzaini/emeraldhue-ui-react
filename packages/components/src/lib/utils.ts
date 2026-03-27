@@ -92,7 +92,7 @@ const twMerge = extendTailwindMerge({
         'text-strong',
         'text-neutral',
       ],
-    },
+    } as any,
   },
 })
 

@@ -1,4 +1,4 @@
-import figma from '@figma/code-connect'
+import figma from '@figma/code-connect/react'
 import { AvatarGroup } from './AvatarGroup'
 import { AvatarSingle } from '../avatar-single'
 

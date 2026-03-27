@@ -82,7 +82,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
         {...props}
       >
         {visibleChildren.map((child, index) => {
-          if (React.isValidElement(child)) {
+          if (React.isValidElement<{ className?: string }>(child)) {
             return React.cloneElement(child, {
               key: index,
               size,
