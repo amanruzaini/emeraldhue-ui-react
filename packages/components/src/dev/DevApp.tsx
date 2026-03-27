@@ -1,6 +1,8 @@
 import React from 'react'
 import { Button } from '../components/button'
 import type { ButtonVariant, ButtonSize } from '../components/button'
+import { CheckboxInput } from '../components/checkbox-input'
+import type { CheckboxInputSize } from '../components/checkbox-input'
 
 const themes = [
   'theme-light',
@@ -13,6 +15,7 @@ const themes = [
 
 const variants: ButtonVariant[] = ['Primary', 'Secondary', 'Tertiary', 'Destructive']
 const sizes: ButtonSize[] = ['xs', 'sm', 'md', 'lg']
+const checkboxSizes: CheckboxInputSize[] = ['sm', 'md']
 
 const PlaceholderIcon = () => <span>●</span>
 
@@ -118,6 +121,60 @@ export function DevApp() {
           </Button>
         ))}
       </div>
+
+      <h2 style={{ marginBottom: '0.5rem' }}>Checkbox Input</h2>
+      <table style={{ borderCollapse: 'collapse', marginBottom: '2rem' }}>
+        <thead>
+          <tr>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Size</th>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Unchecked</th>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Checked</th>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Indeterminate</th>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Disabled</th>
+            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Disabled checked</th>
+          </tr>
+        </thead>
+        <tbody>
+          {checkboxSizes.map((size) => (
+            <tr key={size}>
+              <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{size}</td>
+              <td style={{ padding: '0.5rem' }}>
+                <CheckboxInput aria-label={`${size} unchecked checkbox`} size={size} />
+              </td>
+              <td style={{ padding: '0.5rem' }}>
+                <CheckboxInput
+                  aria-label={`${size} checked checkbox`}
+                  size={size}
+                  defaultChecked
+                />
+              </td>
+              <td style={{ padding: '0.5rem' }}>
+                <CheckboxInput
+                  aria-label={`${size} indeterminate checkbox`}
+                  size={size}
+                  indeterminate
+                />
+              </td>
+              <td style={{ padding: '0.5rem' }}>
+                <CheckboxInput
+                  aria-label={`${size} disabled checkbox`}
+                  size={size}
+                  disabled
+                />
+              </td>
+              <td style={{ padding: '0.5rem' }}>
+                <CheckboxInput
+                  aria-label={`${size} disabled checked checkbox`}
+                  size={size}
+                  checked
+                  disabled
+                  readOnly
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }
