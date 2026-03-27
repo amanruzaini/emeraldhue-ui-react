@@ -500,7 +500,6 @@ export type {
 
 - Never import shadcn's CSS (`shadcn/tailwind.css`, `tw-animate-css`) — use EH tokens only
 - Never use plain Tailwind colour utilities (`bg-blue-500`)
-- Never use plain Tailwind spacing utilities (`p-4`, `px-6`)
 - Never hardcode pixel values (`[--icon-size:16px]`)
 - Never create a `state` prop for hover/focus/pressed states
 - Never put types or variants in separate files by default
