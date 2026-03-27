@@ -58,7 +58,8 @@ const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
         role="group"
         ref={ref}
         className={cn(
-          'inline-flex items-center overflow-clip rounded-md',
+          'inline-flex items-center overflow-visible rounded-md',
+          '[&>*:first-child]:rounded-l-md [&>*:last-child]:rounded-r-md',
           'bg-default',
           'border-solid border-t-xs border-l-xs border-r-xs border-b-sm border-default',
           'default-ring-bezel',
@@ -101,7 +102,7 @@ const ButtonGroupItem = React.forwardRef<HTMLButtonElement, ButtonGroupItemProps
             : [
                 'hover:bg-neutral-inverted-hover hover:border-transparent',
                 'active:bg-neutral-inverted-hover active:border-default',
-                'focus-visible:focus-ring focus-visible:border-transparent focus-visible:z-10',
+                'focus-visible:outline-none focus-visible:focus-ring focus-visible:border-transparent focus-visible:z-10',
                 'disabled:bg-disabled disabled:text-inverted-disabled disabled:border-transparent disabled:cursor-not-allowed disabled:pointer-events-none',
               ],
           className,
