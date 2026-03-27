@@ -1,6 +1,38 @@
 import React from 'react'
+import { AvatarGroup } from '../components/avatar-group'
+import type { AvatarGroupSize } from '../components/avatar-group'
+import { AvatarSingle } from '../components/avatar-single'
+import type {
+  AvatarSingleIndicatorType,
+  AvatarSingleSize,
+  AvatarSingleType,
+} from '../components/avatar-single'
+import { BadgeNonSemantic } from '../components/badge-non-semantic'
+import type {
+  BadgeNonSemanticAppearance,
+  BadgeNonSemanticColour,
+  BadgeNonSemanticSize,
+} from '../components/badge-non-semantic'
+import { BadgeNotificationNonSemantic } from '../components/badge-notification-non-semantic'
+import type {
+  BadgeNotificationNonSemanticColour,
+  BadgeNotificationNonSemanticShape,
+  BadgeNotificationNonSemanticSize,
+} from '../components/badge-notification-non-semantic'
+import { BadgeNotificationSemantic } from '../components/badge-notification-semantic'
+import type {
+  BadgeNotificationSemanticShape,
+  BadgeNotificationSemanticSize,
+  BadgeNotificationSemanticStatus,
+} from '../components/badge-notification-semantic'
+import { BadgeSemantic } from '../components/badge-semantic'
+import type {
+  BadgeSemanticAppearance,
+  BadgeSemanticSize,
+  BadgeSemanticStatus,
+} from '../components/badge-semantic'
 import { Button } from '../components/button'
-import type { ButtonVariant, ButtonSize } from '../components/button'
+import type { ButtonSize, ButtonVariant } from '../components/button'
 import { CheckboxInput } from '../components/checkbox-input'
 import type { CheckboxInputSize } from '../components/checkbox-input'
 
@@ -13,168 +45,479 @@ const themes = [
   'theme-dark-colour-blind',
 ] as const
 
-const variants: ButtonVariant[] = ['Primary', 'Secondary', 'Tertiary', 'Destructive']
-const sizes: ButtonSize[] = ['xs', 'sm', 'md', 'lg']
+const buttonVariants: ButtonVariant[] = ['Primary', 'Secondary', 'Tertiary', 'Destructive']
+const buttonSizes: ButtonSize[] = ['xs', 'sm', 'md', 'lg']
 const checkboxSizes: CheckboxInputSize[] = ['sm', 'md']
+const avatarSingleSizes: AvatarSingleSize[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl']
+const avatarGroupSizes: AvatarGroupSize[] = ['xs', 'sm', 'md']
+const avatarTypes: AvatarSingleType[] = ['Image', 'Initial']
+const avatarIndicatorTypes: AvatarSingleIndicatorType[] = ['Status', 'Logo']
+const badgeSizes: Array<BadgeNonSemanticSize | BadgeSemanticSize> = ['sm', 'md', 'lg']
+const badgeNonSemanticAppearances: BadgeNonSemanticAppearance[] = ['Inverted', 'Solid']
+const badgeNonSemanticColours: BadgeNonSemanticColour[] = ['Brand', 'Accent', 'Blue Grey']
+const badgeSemanticAppearances: BadgeSemanticAppearance[] = ['Inverted', 'Solid']
+const badgeSemanticStatuses: BadgeSemanticStatus[] = ['Error', 'Success', 'Info', 'Warning']
+const notificationSizes: Array<BadgeNotificationNonSemanticSize | BadgeNotificationSemanticSize> = [
+  'xs',
+  'sm',
+  'md',
+  'lg',
+]
+const notificationNonSemanticShapes: BadgeNotificationNonSemanticShape[] = ['Solid', 'Inverted']
+const notificationNonSemanticColours: BadgeNotificationNonSemanticColour[] = ['Brand', 'Neutral']
+const notificationSemanticShapes: BadgeNotificationSemanticShape[] = ['Solid', 'Inverted']
+const notificationSemanticStatuses: BadgeNotificationSemanticStatus[] = ['Info', 'Alert']
 
-const PlaceholderIcon = () => <span>●</span>
+const previewImageSrc = `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+    <defs>
+      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0f766e" />
+        <stop offset="100%" stop-color="#14b8a6" />
+      </linearGradient>
+    </defs>
+    <rect width="120" height="120" fill="url(#bg)" rx="60" />
+    <circle cx="60" cy="46" r="20" fill="#ecfeff" />
+    <path d="M26 100c8-20 24-30 34-30s26 10 34 30" fill="#ecfeff" />
+  </svg>`
+)}`
 
-function setTheme(theme: string) {
-  document.documentElement.setAttribute('data-theme', theme)
+const pageStyle: React.CSSProperties = {
+  padding: '2rem',
+  fontFamily: 'sans-serif',
+}
+
+const themeSwitcherStyle: React.CSSProperties = {
+  display: 'flex',
+  gap: '0.5rem',
+  marginBottom: '2rem',
+  flexWrap: 'wrap',
+}
+
+const sectionStyle: React.CSSProperties = {
+  marginBottom: '2.5rem',
+  padding: '1.25rem',
+  border: '1px solid rgba(128, 128, 128, 0.25)',
+  borderRadius: '12px',
+}
+
+const flowStyle: React.CSSProperties = {
+  display: 'flex',
+  gap: '1rem',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+}
+
+const cardGridStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+  gap: '1rem',
+}
+
+const cardStyle: React.CSSProperties = {
+  border: '1px solid rgba(128, 128, 128, 0.2)',
+  borderRadius: '10px',
+  padding: '1rem',
+}
+
+const tableStyle: React.CSSProperties = {
+  borderCollapse: 'collapse',
+  width: '100%',
+}
+
+const cellStyle: React.CSSProperties = {
+  padding: '0.75rem',
+  textAlign: 'left',
+  verticalAlign: 'top',
+}
+
+const PlaceholderIcon = () => (
+  <span
+    aria-hidden="true"
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      height: '100%',
+      fontSize: '0.9em',
+      lineHeight: 1,
+    }}
+  >
+    ●
+  </span>
+)
+
+const LogoIcon = () => (
+  <span
+    aria-hidden="true"
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      height: '100%',
+      fontSize: '0.75em',
+      fontWeight: 700,
+      lineHeight: 1,
+    }}
+  >
+    E
+  </span>
+)
+
+function PreviewSection({
+  title,
+  children,
+}: {
+  title: string
+  children: React.ReactNode
+}) {
+  return (
+    <section style={sectionStyle}>
+      <h2 style={{ marginTop: 0, marginBottom: '1rem' }}>{title}</h2>
+      {children}
+    </section>
+  )
+}
+
+function PreviewCard({
+  title,
+  children,
+}: {
+  title: string
+  children: React.ReactNode
+}) {
+  return (
+    <div style={cardStyle}>
+      <h3 style={{ marginTop: 0, marginBottom: '0.75rem', fontSize: '1rem' }}>{title}</h3>
+      <div style={flowStyle}>{children}</div>
+    </div>
+  )
 }
 
 export function DevApp() {
+  const [theme, setTheme] = React.useState<(typeof themes)[number]>('theme-light')
+
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
+
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
+    <div style={pageStyle}>
       <h1 style={{ marginBottom: '1rem' }}>EH Components Dev</h1>
 
-      {/* Theme Switcher */}
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-        {themes.map((theme) => (
-          <button
-            key={theme}
-            onClick={() => setTheme(theme)}
-            style={{
-              padding: '0.5rem 1rem',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              background: '#f5f5f5',
-            }}
-          >
-            {theme}
-          </button>
-        ))}
+      <div style={themeSwitcherStyle}>
+        {themes.map((themeName) => {
+          const isActive = themeName === theme
+
+          return (
+            <button
+              key={themeName}
+              onClick={() => setTheme(themeName)}
+              style={{
+                padding: '0.5rem 1rem',
+                border: `1px solid ${isActive ? '#111' : '#ccc'}`,
+                borderRadius: '999px',
+                cursor: 'pointer',
+                background: isActive ? '#111' : '#f5f5f5',
+                color: isActive ? '#fff' : '#111',
+                fontWeight: isActive ? 700 : 500,
+              }}
+            >
+              {themeName}
+            </button>
+          )
+        })}
       </div>
 
-      {/* Variants × Sizes */}
-      <h2 style={{ marginBottom: '0.5rem' }}>Variants × Sizes (Label + icon)</h2>
-      <table style={{ borderCollapse: 'collapse', marginBottom: '2rem' }}>
-        <thead>
-          <tr>
-            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Variant \ Size</th>
-            {sizes.map((size) => (
-              <th key={size} style={{ padding: '0.5rem' }}>{size}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {variants.map((variant) => (
-            <tr key={variant}>
-              <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{variant}</td>
-              {sizes.map((size) => (
-                <td key={size} style={{ padding: '0.5rem' }}>
-                  <Button variant={variant} size={size}>
-                    {variant}
-                  </Button>
-                </td>
+      <PreviewSection title="Button">
+        <h3 style={{ marginBottom: '0.75rem' }}>Variants x Sizes</h3>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={cellStyle}>Variant \\ Size</th>
+              {buttonSizes.map((size) => (
+                <th key={size} style={cellStyle}>
+                  {size}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {buttonVariants.map((variant) => (
+              <tr key={variant}>
+                <td style={{ ...cellStyle, fontWeight: 700 }}>{variant}</td>
+                {buttonSizes.map((size) => (
+                  <td key={size} style={cellStyle}>
+                    <Button variant={variant} size={size}>
+                      {variant}
+                    </Button>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      {/* With Icons */}
-      <h2 style={{ marginBottom: '0.5rem' }}>With Leading & Trailing Icons</h2>
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
-        {variants.map((variant) => (
-          <Button
-            key={variant}
-            variant={variant}
-            size="md"
-            startIcon={<PlaceholderIcon />}
-            endIcon={<PlaceholderIcon />}
-          >
-            {variant}
-          </Button>
-        ))}
-      </div>
+        <div style={{ height: '1.5rem' }} />
 
-      {/* Icon Only */}
-      <h2 style={{ marginBottom: '0.5rem' }}>Icon Only</h2>
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
-        {variants.map((variant) => (
-          sizes.map((size) => (
-            <Button
-              key={`${variant}-${size}`}
-              variant={variant}
-              size={size}
-              iconOnly
-            >
-              <PlaceholderIcon />
-            </Button>
-          ))
-        ))}
-      </div>
+        <div style={cardGridStyle}>
+          <PreviewCard title="Leading + Trailing Icons">
+            {buttonVariants.map((variant) => (
+              <Button
+                key={variant}
+                variant={variant}
+                size="md"
+                startIcon={<PlaceholderIcon />}
+                endIcon={<PlaceholderIcon />}
+              >
+                {variant}
+              </Button>
+            ))}
+          </PreviewCard>
 
-      {/* Disabled States */}
-      <h2 style={{ marginBottom: '0.5rem' }}>Disabled</h2>
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
-        {variants.map((variant) => (
-          <Button
-            key={variant}
-            variant={variant}
-            size="md"
-            disabled
-          >
-            {`${variant} (disabled)`}
-          </Button>
-        ))}
-      </div>
+          <PreviewCard title="Icon Only">
+            {buttonVariants.flatMap((variant) =>
+              buttonSizes.map((size) => (
+                <Button key={`${variant}-${size}`} variant={variant} size={size} iconOnly>
+                  <PlaceholderIcon />
+                </Button>
+              ))
+            )}
+          </PreviewCard>
 
-      <h2 style={{ marginBottom: '0.5rem' }}>Checkbox Input</h2>
-      <table style={{ borderCollapse: 'collapse', marginBottom: '2rem' }}>
-        <thead>
-          <tr>
-            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Size</th>
-            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Unchecked</th>
-            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Checked</th>
-            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Indeterminate</th>
-            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Disabled</th>
-            <th style={{ padding: '0.5rem', textAlign: 'left' }}>Disabled checked</th>
-          </tr>
-        </thead>
-        <tbody>
-          {checkboxSizes.map((size) => (
-            <tr key={size}>
-              <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{size}</td>
-              <td style={{ padding: '0.5rem' }}>
-                <CheckboxInput aria-label={`${size} unchecked checkbox`} size={size} />
-              </td>
-              <td style={{ padding: '0.5rem' }}>
-                <CheckboxInput
-                  aria-label={`${size} checked checkbox`}
-                  size={size}
-                  defaultChecked
-                />
-              </td>
-              <td style={{ padding: '0.5rem' }}>
-                <CheckboxInput
-                  aria-label={`${size} indeterminate checkbox`}
-                  size={size}
-                  indeterminate
-                />
-              </td>
-              <td style={{ padding: '0.5rem' }}>
-                <CheckboxInput
-                  aria-label={`${size} disabled checkbox`}
-                  size={size}
-                  disabled
-                />
-              </td>
-              <td style={{ padding: '0.5rem' }}>
-                <CheckboxInput
-                  aria-label={`${size} disabled checked checkbox`}
-                  size={size}
-                  checked
-                  disabled
-                  readOnly
-                />
-              </td>
+          <PreviewCard title="Disabled">
+            {buttonVariants.map((variant) => (
+              <Button key={variant} variant={variant} size="md" disabled>
+                {variant}
+              </Button>
+            ))}
+          </PreviewCard>
+        </div>
+      </PreviewSection>
+
+      <PreviewSection title="Checkbox Input">
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={cellStyle}>Size</th>
+              <th style={cellStyle}>Unchecked</th>
+              <th style={cellStyle}>Checked</th>
+              <th style={cellStyle}>Indeterminate</th>
+              <th style={cellStyle}>Disabled</th>
+              <th style={cellStyle}>Disabled checked</th>
             </tr>
+          </thead>
+          <tbody>
+            {checkboxSizes.map((size) => (
+              <tr key={size}>
+                <td style={{ ...cellStyle, fontWeight: 700 }}>{size}</td>
+                <td style={cellStyle}>
+                  <CheckboxInput aria-label={`${size} unchecked checkbox`} size={size} />
+                </td>
+                <td style={cellStyle}>
+                  <CheckboxInput aria-label={`${size} checked checkbox`} size={size} defaultChecked />
+                </td>
+                <td style={cellStyle}>
+                  <CheckboxInput aria-label={`${size} indeterminate checkbox`} size={size} indeterminate />
+                </td>
+                <td style={cellStyle}>
+                  <CheckboxInput aria-label={`${size} disabled checkbox`} size={size} disabled />
+                </td>
+                <td style={cellStyle}>
+                  <CheckboxInput
+                    aria-label={`${size} disabled checked checkbox`}
+                    size={size}
+                    checked
+                    disabled
+                    readOnly
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </PreviewSection>
+
+      <PreviewSection title="Avatar Single">
+        <div style={cardGridStyle}>
+          {avatarTypes.map((type) => (
+            <PreviewCard key={type} title={`${type} by Size`}>
+              {avatarSingleSizes.map((size) => (
+                <AvatarSingle
+                  key={`${type}-${size}`}
+                  size={size}
+                  type={type}
+                  src={previewImageSrc}
+                  alt="Preview avatar"
+                  initials="EH"
+                />
+              ))}
+            </PreviewCard>
           ))}
-        </tbody>
-      </table>
+
+          {avatarIndicatorTypes.map((indicatorType) => (
+            <PreviewCard key={indicatorType} title={`${indicatorType} Indicator`}>
+              {avatarSingleSizes.map((size) => (
+                <AvatarSingle
+                  key={`${indicatorType}-${size}`}
+                  size={size}
+                  type="Image"
+                  src={previewImageSrc}
+                  alt="Preview avatar"
+                  indicator
+                  indicatorType={indicatorType}
+                  online={indicatorType === 'Status'}
+                  logoIcon={indicatorType === 'Logo' ? <LogoIcon /> : undefined}
+                />
+              ))}
+            </PreviewCard>
+          ))}
+        </div>
+      </PreviewSection>
+
+      <PreviewSection title="Avatar Group">
+        <div style={cardGridStyle}>
+          {avatarGroupSizes.map((size) => (
+            <PreviewCard key={size} title={`Size ${size}`}>
+              <AvatarGroup size={size}>
+                <AvatarSingle type="Image" src={previewImageSrc} alt="Avatar 1" />
+                <AvatarSingle type="Initial" initials="AM" />
+                <AvatarSingle type="Image" src={previewImageSrc} alt="Avatar 3" />
+                <AvatarSingle type="Initial" initials="EH" />
+              </AvatarGroup>
+              <AvatarGroup size={size} max={3}>
+                <AvatarSingle type="Image" src={previewImageSrc} alt="Avatar 1" />
+                <AvatarSingle type="Initial" initials="AM" />
+                <AvatarSingle type="Image" src={previewImageSrc} alt="Avatar 3" />
+                <AvatarSingle type="Initial" initials="EH" />
+                <AvatarSingle type="Initial" initials="UI" />
+              </AvatarGroup>
+            </PreviewCard>
+          ))}
+        </div>
+      </PreviewSection>
+
+      <PreviewSection title="Badge Non Semantic">
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={cellStyle}>Appearance \\ Colour</th>
+              {badgeNonSemanticColours.map((colour) => (
+                <th key={colour} style={cellStyle}>
+                  {colour}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {badgeNonSemanticAppearances.map((appearance) => (
+              <tr key={appearance}>
+                <td style={{ ...cellStyle, fontWeight: 700 }}>{appearance}</td>
+                {badgeNonSemanticColours.map((colour) => (
+                  <td key={`${appearance}-${colour}`} style={cellStyle}>
+                    <div style={flowStyle}>
+                      {badgeSizes.map((size) => (
+                        <BadgeNonSemantic
+                          key={`${appearance}-${colour}-${size}`}
+                          size={size}
+                          appearance={appearance}
+                          colour={colour}
+                          label={`${size.toUpperCase()} badge`}
+                          iconLeading={size !== 'sm'}
+                          icon={<PlaceholderIcon />}
+                        />
+                      ))}
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </PreviewSection>
+
+      <PreviewSection title="Badge Semantic">
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={cellStyle}>Appearance \\ Status</th>
+              {badgeSemanticStatuses.map((status) => (
+                <th key={status} style={cellStyle}>
+                  {status}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {badgeSemanticAppearances.map((appearance) => (
+              <tr key={appearance}>
+                <td style={{ ...cellStyle, fontWeight: 700 }}>{appearance}</td>
+                {badgeSemanticStatuses.map((status) => (
+                  <td key={`${appearance}-${status}`} style={cellStyle}>
+                    <div style={flowStyle}>
+                      {badgeSizes.map((size) => (
+                        <BadgeSemantic
+                          key={`${appearance}-${status}-${size}`}
+                          size={size}
+                          appearance={appearance}
+                          status={status}
+                          label={`${size.toUpperCase()} ${status}`}
+                          iconLeading={size !== 'sm'}
+                          icon={<PlaceholderIcon />}
+                        />
+                      ))}
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </PreviewSection>
+
+      <PreviewSection title="Badge Notification Non Semantic">
+        <div style={cardGridStyle}>
+          {notificationNonSemanticShapes.map((shape) => (
+            <PreviewCard key={shape} title={shape}>
+              {notificationNonSemanticColours.flatMap((colour) =>
+                notificationSizes.map((size) => (
+                  <BadgeNotificationNonSemantic
+                    key={`${shape}-${colour}-${size}`}
+                    size={size}
+                    shape={shape}
+                    colour={colour}
+                    count={size === 'xs' ? undefined : size === 'lg' ? 99 : 7}
+                    title={`${shape} ${colour} ${size}`}
+                  />
+                ))
+              )}
+            </PreviewCard>
+          ))}
+        </div>
+      </PreviewSection>
+
+      <PreviewSection title="Badge Notification Semantic">
+        <div style={cardGridStyle}>
+          {notificationSemanticShapes.map((shape) => (
+            <PreviewCard key={shape} title={shape}>
+              {notificationSemanticStatuses.flatMap((status) =>
+                notificationSizes.map((size) => (
+                  <BadgeNotificationSemantic
+                    key={`${shape}-${status}-${size}`}
+                    size={size}
+                    shape={shape}
+                    status={status}
+                    count={size === 'xs' ? undefined : status === 'Alert' ? 12 : 3}
+                    title={`${shape} ${status} ${size}`}
+                  />
+                ))
+              )}
+            </PreviewCard>
+          ))}
+        </div>
+      </PreviewSection>
     </div>
   )
 }
