@@ -4,7 +4,6 @@ import { cn } from '../../lib/utils'
 
 export type ButtonVariant = 'Primary' | 'Secondary' | 'Tertiary' | 'Destructive'
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
-export type ButtonContent = 'Label + icon' | 'Icon only'
 
 export const buttonVariants = cva(
   [
@@ -118,20 +117,12 @@ export interface ButtonProps
   variant?: ButtonVariant
   /** Maps to Figma "Size" property */
   size?: ButtonSize
-  /** Maps to Figma "Content" property — controls label vs icon-only mode */
-  content?: ButtonContent
-  /** Maps to Figma "Icon Leading" boolean — only visible when content is "Label + icon" */
-  iconLeading?: boolean
-  /** Maps to Figma "Icon Trailing" boolean — only visible when content is "Label + icon" */
-  iconTrailing?: boolean
-  /** Icon node rendered in the leading position */
-  leadIcon?: React.ReactNode
-  /** Icon node rendered in the trailing position */
-  trailIcon?: React.ReactNode
-  /** Icon rendered in icon-only mode — only visible when content is "Icon only" */
-  icon?: React.ReactNode
-  /** Button label text — only visible when content is "Label + icon" */
-  label?: string
+  /** Maps to Figma "Content" = "Icon only". */
+  iconOnly?: boolean
+  /** Maps to Figma "Icon Leading" property. Shown when provided. */
+  startIcon?: React.ReactNode
+  /** Maps to Figma "Icon Trailing" property. Shown when provided. */
+  endIcon?: React.ReactNode
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -139,21 +130,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     {
       variant = 'Primary',
       size = 'md',
-      content = 'Label + icon',
-      iconLeading = false,
-      iconTrailing = false,
-      leadIcon,
-      trailIcon,
-      icon,
-      label,
+      iconOnly = false,
+      startIcon,
+      endIcon,
       className,
       children,
       ...props
     },
     ref
   ) => {
-    const isIconOnly = content === 'Icon only'
-    const buttonLabel = label ?? children
     const iconSizeClass = iconSizeClassBySize[size]
 
     return (
@@ -162,25 +147,25 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           buttonVariants({ variant, size }),
-          isIconOnly && 'aspect-square',
-          !isIconOnly && 'gap-2',
+          iconOnly && 'aspect-square',
+          !iconOnly && 'gap-2',
           className
         )}
         {...props}
       >
-        {isIconOnly ? (
-          <span className={cn('shrink-0', iconSizeClass)}>{icon}</span>
+        {iconOnly ? (
+          <span className={cn('shrink-0', iconSizeClass)}>{children}</span>
         ) : (
           <>
-            {iconLeading && leadIcon && (
+            {startIcon && (
               <span className={cn('shrink-0', iconSizeClass)}>
-                {leadIcon}
+                {startIcon}
               </span>
             )}
-            <span className="whitespace-nowrap">{buttonLabel}</span>
-            {iconTrailing && trailIcon && (
+            <span className="whitespace-nowrap">{children}</span>
+            {endIcon && (
               <span className={cn('shrink-0', iconSizeClass)}>
-                {trailIcon}
+                {endIcon}
               </span>
             )}
           </>

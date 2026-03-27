@@ -61,7 +61,9 @@ export function DevApp() {
               <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{variant}</td>
               {sizes.map((size) => (
                 <td key={size} style={{ padding: '0.5rem' }}>
-                  <Button variant={variant} size={size} label={variant} />
+                  <Button variant={variant} size={size}>
+                    {variant}
+                  </Button>
                 </td>
               ))}
             </tr>
@@ -77,13 +79,11 @@ export function DevApp() {
             key={variant}
             variant={variant}
             size="md"
-            content="Label + icon"
-            iconLeading
-            iconTrailing
-            leadIcon={<PlaceholderIcon />}
-            trailIcon={<PlaceholderIcon />}
-            label={variant}
-          />
+            startIcon={<PlaceholderIcon />}
+            endIcon={<PlaceholderIcon />}
+          >
+            {variant}
+          </Button>
         ))}
       </div>
 
@@ -96,9 +96,10 @@ export function DevApp() {
               key={`${variant}-${size}`}
               variant={variant}
               size={size}
-              content="Icon only"
-              icon={<PlaceholderIcon />}
-            />
+              iconOnly
+            >
+              <PlaceholderIcon />
+            </Button>
           ))
         ))}
       </div>
@@ -111,9 +112,10 @@ export function DevApp() {
             key={variant}
             variant={variant}
             size="md"
-            label={`${variant} (disabled)`}
             disabled
-          />
+          >
+            {`${variant} (disabled)`}
+          </Button>
         ))}
       </div>
     </div>
