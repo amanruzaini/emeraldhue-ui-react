@@ -20,6 +20,10 @@
     /* Font Families e.g. font-default */
     --font-default: var(--eh-font-type-default);
 
+    /* Numeric OpenType Feautre */
+    --eh-font-feature-ui: "ss02" 1, "cv01" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv05" 1, "cv07" 1, "cv09" 1, "cv10" 1;
+    --eh-font-variant-numeric-ui: lining-nums tabular-nums slashed-zero;
+
     /* Font Weights e.g. font-regular */
     --font-weight-regular: var(--eh-font-weight-regular);
     --font-weight-medium: var(--eh-font-weight-medium);
@@ -149,6 +153,14 @@
     html, body {
         -webkit-font-smoothing: antialiased;
         font-family: var(--eh-font-type-default);
+    }
+}
+
+/* Numeric OpenType */
+@layer utilities {
+    .font-ui {
+        font-feature-settings: var(--eh-font-feature-ui);
+        font-variant-numeric: var(--eh-font-variant-numeric-ui);
     }
 }
 

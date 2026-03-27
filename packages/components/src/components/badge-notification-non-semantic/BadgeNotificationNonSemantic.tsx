@@ -123,6 +123,7 @@ const BadgeNotificationNonSemantic = React.forwardRef<HTMLSpanElement, BadgeNoti
               'leading-[var(--eh-font-line-height-body-xs)]',
               'tracking-[var(--eh-font-letter-spacing-body-sm)]',
               'font-default',
+              'font-ui',
               // Text colour
               textColourClasses[shape][colour],
             )}
