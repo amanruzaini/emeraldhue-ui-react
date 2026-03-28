@@ -1,0 +1,77 @@
+# Badge
+
+EH includes two badge families: **BadgeNonSemantic** for general labelling and **BadgeSemantic** for status communication.
+
+## Preview
+
+import { ComponentPreview } from '../../../components/ComponentPreview'
+import { PropsTable } from '../../../components/PropsTable'
+import { BadgeNonSemantic, BadgeSemantic } from '@eh/components'
+
+### Non-semantic badges
+
+<ComponentPreview title="BadgeNonSemantic — appearances × colours">
+  <BadgeNonSemantic appearance="Inverted" colour="Brand" size="md" label="Brand Inverted" />
+  <BadgeNonSemantic appearance="Solid" colour="Brand" size="md" label="Brand Solid" />
+  <BadgeNonSemantic appearance="Inverted" colour="Accent" size="md" label="Accent Inverted" />
+  <BadgeNonSemantic appearance="Solid" colour="Accent" size="md" label="Accent Solid" />
+  <BadgeNonSemantic appearance="Inverted" colour="Blue Grey" size="md" label="Blue Grey Inverted" />
+  <BadgeNonSemantic appearance="Solid" colour="Blue Grey" size="md" label="Blue Grey Solid" />
+</ComponentPreview>
+
+### Semantic badges
+
+<ComponentPreview title="BadgeSemantic — statuses">
+  <BadgeSemantic appearance="Inverted" status="Error" size="md" label="Error" />
+  <BadgeSemantic appearance="Inverted" status="Success" size="md" label="Success" />
+  <BadgeSemantic appearance="Inverted" status="Info" size="md" label="Info" />
+  <BadgeSemantic appearance="Inverted" status="Warning" size="md" label="Warning" />
+</ComponentPreview>
+
+<ComponentPreview title="BadgeSemantic — solid appearance">
+  <BadgeSemantic appearance="Solid" status="Error" size="md" label="Error" />
+  <BadgeSemantic appearance="Solid" status="Success" size="md" label="Success" />
+  <BadgeSemantic appearance="Solid" status="Info" size="md" label="Info" />
+  <BadgeSemantic appearance="Solid" status="Warning" size="md" label="Warning" />
+</ComponentPreview>
+
+### Sizes
+
+<ComponentPreview title="Badge sizes">
+  <BadgeNonSemantic appearance="Inverted" colour="Brand" size="sm" label="Small" />
+  <BadgeNonSemantic appearance="Inverted" colour="Brand" size="md" label="Medium" />
+  <BadgeNonSemantic appearance="Inverted" colour="Brand" size="lg" label="Large" />
+</ComponentPreview>
+
+## Props
+
+### BadgeNonSemantic
+
+<PropsTable
+  props={[
+    { name: 'appearance', type: "'Inverted' | 'Solid'", default: "'Inverted'", description: 'Visual appearance style' },
+    { name: 'colour', type: "'Brand' | 'Accent' | 'Blue Grey'", default: "'Brand'", description: 'Colour theme' },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Badge size' },
+    { name: 'label', type: 'string', default: undefined, description: 'Badge text', required: true },
+    { name: 'icon', type: 'ReactNode', default: undefined, description: 'Optional leading icon' },
+  ]}
+/>
+
+### BadgeSemantic
+
+<PropsTable
+  props={[
+    { name: 'appearance', type: "'Inverted' | 'Solid'", default: "'Inverted'", description: 'Visual appearance style' },
+    { name: 'status', type: "'Error' | 'Success' | 'Info' | 'Warning'", default: "'Info'", description: 'Semantic status type' },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Badge size' },
+    { name: 'label', type: 'string', default: undefined, description: 'Badge text', required: true },
+    { name: 'icon', type: 'ReactNode', default: undefined, description: 'Optional leading icon' },
+  ]}
+/>
+
+## Design tokens used
+
+- **Root element**: `<span>` (inline for text flows)
+- **Typography**: Non-standard composite — `text-[length:var(--eh-font-size-body-sm)]` with `leading-[var(--eh-font-line-height-body-xs)]`
+- **Non-semantic colours**: 6 compound variants for appearance × colour
+- **Semantic colours**: 8 compound variants for appearance × status

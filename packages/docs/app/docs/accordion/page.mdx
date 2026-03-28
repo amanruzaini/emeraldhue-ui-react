@@ -1,0 +1,93 @@
+# Accordion
+
+The Accordion component uses Radix UI's Accordion primitive as its base, styled with EH design tokens. It supports both single-expand and multi-expand modes.
+
+## Preview
+
+import { ComponentPreview } from '../../../components/ComponentPreview'
+import { PropsTable } from '../../../components/PropsTable'
+import { Accordion, AccordionItem } from '@eh/components'
+
+### Single mode (collapsible)
+
+<ComponentPreview title="Accordion — single expand">
+  <div style={{ width: '100%' }}>
+    <Accordion type="single" collapsible>
+      <AccordionItem value="item-1" title="What is Emerald HUE?">
+        Emerald HUE is a design system built for Petronas' industrial digital products.
+      </AccordionItem>
+      <AccordionItem value="item-2" title="How many themes are supported?">
+        EH supports 6 theme modes: Light, Dark, Light HC, Dark HC, Light CB, and Dark CB.
+      </AccordionItem>
+      <AccordionItem value="item-3" title="Is it accessible?">
+        Yes — all components target WCAG 2.1 Level AA compliance.
+      </AccordionItem>
+    </Accordion>
+  </div>
+</ComponentPreview>
+
+### Multiple mode
+
+<ComponentPreview title="Accordion — multiple expand">
+  <div style={{ width: '100%' }}>
+    <Accordion type="multiple">
+      <AccordionItem value="item-1" title="Installation">
+        Install via npm: npm install @eh/components @eh/tokens
+      </AccordionItem>
+      <AccordionItem value="item-2" title="Theming">
+        Apply data-theme and data-text-resize attributes to your root element.
+      </AccordionItem>
+      <AccordionItem value="item-3" title="Accessibility">
+        Keyboard navigation and screen reader support built in via Radix primitives.
+      </AccordionItem>
+    </Accordion>
+  </div>
+</ComponentPreview>
+
+### With badge and disabled
+
+<ComponentPreview title="Accordion — badge and disabled items">
+  <div style={{ width: '100%' }}>
+    <Accordion type="single" collapsible>
+      <AccordionItem value="item-1" title="Active item" showBadge badgeLabel="New">
+        This item has a badge indicator.
+      </AccordionItem>
+      <AccordionItem value="item-2" title="Disabled item" disabled>
+        This item cannot be expanded.
+      </AccordionItem>
+    </Accordion>
+  </div>
+</ComponentPreview>
+
+## Props
+
+### Accordion (root)
+
+<PropsTable
+  props={[
+    { name: 'type', type: "'single' | 'multiple'", default: "'single'", description: 'Whether one or multiple items can be open at once', required: true },
+    { name: 'collapsible', type: 'boolean', default: 'false', description: 'When type="single", allows closing the open item' },
+    { name: 'defaultValue', type: 'string | string[]', default: undefined, description: 'Initially expanded item(s)' },
+  ]}
+/>
+
+### AccordionItem
+
+<PropsTable
+  props={[
+    { name: 'value', type: 'string', default: undefined, description: 'Unique identifier for this item', required: true },
+    { name: 'title', type: 'string', default: undefined, description: 'Item heading text', required: true },
+    { name: 'subtitle', type: 'string', default: undefined, description: 'Optional subtitle below the title' },
+    { name: 'startIcon', type: 'ReactNode', default: undefined, description: 'Optional leading icon' },
+    { name: 'showBadge', type: 'boolean', default: 'false', description: 'Show a badge indicator' },
+    { name: 'badgeLabel', type: 'string', default: undefined, description: 'Badge text when showBadge is true' },
+    { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevent expanding/collapsing this item' },
+  ]}
+/>
+
+## Design tokens used
+
+- **Container**: `rounded-lg`, `default-ring-bezel`, gap via `--eh-spacing-*`
+- **Trigger**: Styled to look like an EH Button (no nested Button component)
+- **Animation**: Custom keyframes in `tokens.css` for expand/collapse
+- **Base**: `@radix-ui/react-accordion`

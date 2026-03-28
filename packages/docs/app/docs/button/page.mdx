@@ -1,0 +1,63 @@
+# Button
+
+The Button component is the primary interactive element in EH. It supports 4 variants, 4 sizes, and optional leading/trailing icons.
+
+## Preview
+
+import { ComponentPreview } from '../../../components/ComponentPreview'
+import { PropsTable } from '../../../components/PropsTable'
+import { Button } from '@eh/components'
+
+### Variants
+
+<ComponentPreview title="Button variants">
+  <Button variant="Primary" size="md" label="Primary" content="Label + icon" />
+  <Button variant="Secondary" size="md" label="Secondary" content="Label + icon" />
+  <Button variant="Tertiary" size="md" label="Tertiary" content="Label + icon" />
+  <Button variant="Destructive" size="md" label="Destructive" content="Label + icon" />
+</ComponentPreview>
+
+### Sizes
+
+<ComponentPreview title="Button sizes">
+  <Button variant="Primary" size="xs" label="Extra small" content="Label + icon" />
+  <Button variant="Primary" size="sm" label="Small" content="Label + icon" />
+  <Button variant="Primary" size="md" label="Medium" content="Label + icon" />
+  <Button variant="Primary" size="lg" label="Large" content="Label + icon" />
+</ComponentPreview>
+
+### Disabled
+
+<ComponentPreview title="Disabled buttons">
+  <Button variant="Primary" size="md" label="Primary" content="Label + icon" disabled />
+  <Button variant="Secondary" size="md" label="Secondary" content="Label + icon" disabled />
+  <Button variant="Tertiary" size="md" label="Tertiary" content="Label + icon" disabled />
+  <Button variant="Destructive" size="md" label="Destructive" content="Label + icon" disabled />
+</ComponentPreview>
+
+## Props
+
+<PropsTable
+  props={[
+    { name: 'variant', type: "'Primary' | 'Secondary' | 'Tertiary' | 'Destructive'", default: "'Primary'", description: 'Visual style of the button' },
+    { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size' },
+    { name: 'content', type: "'Label + icon' | 'Icon only'", default: "'Label + icon'", description: 'Controls whether the button shows a label with optional icons, or only an icon' },
+    { name: 'label', type: 'string', default: undefined, description: 'Button text label', required: true },
+    { name: 'iconLeading', type: 'boolean', default: 'false', description: 'Show leading icon slot' },
+    { name: 'iconTrailing', type: 'boolean', default: 'false', description: 'Show trailing icon slot' },
+    { name: 'leadIcon', type: 'ReactNode', default: undefined, description: 'Leading icon element' },
+    { name: 'trailIcon', type: 'ReactNode', default: undefined, description: 'Trailing icon element' },
+    { name: 'icon', type: 'ReactNode', default: undefined, description: 'Icon for "Icon only" mode' },
+    { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable the button' },
+  ]}
+/>
+
+> **Note**: The Button API is pending a refactor from Figma-shaped props to code-first props (`children`, `startIcon`, `endIcon`, `iconOnly`).
+
+## Design tokens used
+
+- **Colours**: `bg-brand`, `bg-brand-inverted`, `text-all-white`, `text-default`, `border-brand`
+- **Border**: Asymmetric bezel — `border-t-xs border-l-xs border-r-xs border-b-sm`
+- **Ring**: `default-ring-bezel` for the EH action ring + depth shadow
+- **Spacing**: `px-[var(--eh-spacing-*)]` for all internal padding
+- **Icon sizing**: `[--icon-size:var(--eh-icon-*)]` CSS custom property

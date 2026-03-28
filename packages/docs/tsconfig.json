@@ -1,8 +1,16 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist"
+    "jsx": "preserve",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./*"],
+      "@eh/tokens/*": ["../tokens/*"],
+      "@eh/components": ["../components/src/index.ts"]
+    }
   },
-  "include": ["src"]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.mdx", "next-env.d.ts"],
+  "exclude": ["node_modules", ".next"]
 }

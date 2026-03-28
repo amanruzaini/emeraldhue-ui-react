@@ -1,0 +1,65 @@
+# Getting Started
+
+## Installation
+
+Install the EH component library and design tokens:
+
+```bash
+npm install @eh/components @eh/tokens
+```
+
+## Setup
+
+### 1. Import the token stylesheet
+
+Add the EH token CSS to your application's entry point:
+
+```tsx
+// app/layout.tsx or main.tsx
+import '@eh/tokens/src/input.css'
+```
+
+This imports all EH design tokens and Tailwind v4 configuration.
+
+### 2. Apply a theme
+
+EH uses `data-theme` and `data-text-resize` attributes on a root element to control theming:
+
+```html
+<html data-theme="theme-light" data-text-resize="text-resize-100">
+```
+
+Available themes: `theme-light`, `theme-dark`, `theme-light-high-contrast`, `theme-dark-high-contrast`, `theme-light-colour-blind`, `theme-dark-colour-blind`
+
+Available text resize levels: `text-resize-75`, `text-resize-100`, `text-resize-125`, `text-resize-150`, `text-resize-200`
+
+### 3. Use a component
+
+```tsx
+import { Button } from '@eh/components'
+
+function App() {
+  return (
+    <Button variant="Primary" size="md" label="Click me" content="Label + icon" />
+  )
+}
+```
+
+## Theme flash prevention
+
+To prevent a flash of unstyled content on page load, add this inline script to your `<head>`:
+
+```html
+<script>
+  try {
+    const theme = localStorage.getItem('eh-theme') || 'theme-light';
+    const textResize = localStorage.getItem('eh-text-resize') || 'text-resize-100';
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-text-resize', textResize);
+  } catch (e) {}
+</script>
+```
+
+## What's next
+
+Browse the component pages in the sidebar to see each component in action with live theme switching.

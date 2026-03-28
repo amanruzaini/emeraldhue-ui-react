@@ -1,0 +1,37 @@
+/* Import EH tokens */
+@import '../../tokens/src/tokens.css';
+
+/*
+ * Override Nextra theme CSS custom properties with EH design tokens.
+ * Nextra uses CSS variables prefixed with --nextra-* and standard
+ * next-themes for dark mode. We map EH semantic tokens to these.
+ *
+ * Reference: inspect Nextra's built-in style.css for the full
+ * list of CSS custom properties available for override.
+ */
+
+:root {
+  /* Map EH brand colours to Nextra's primary accent */
+  --nextra-primary-hue: 162deg;
+  --nextra-primary-saturation: 100%;
+
+  /* Use EH font */
+  --nextra-font-family: var(--eh-font-family-default, sans-serif);
+}
+
+/*
+ * NOTE FOR DEVELOPER:
+ * After install, inspect the rendered Nextra page in browser DevTools
+ * to find the exact CSS custom property names Nextra 4 uses.
+ * Then expand this file to map more EH tokens.
+ * Key areas to brand:
+ * - Sidebar background, text, hover states
+ * - Navbar background and border
+ * - Content area typography (font-size, line-height, font-weight)
+ * - Code block styling
+ * - Link colours (use --eh-colour-text-brand)
+ * - Focus ring styles (use EH focus-ring tokens)
+ *
+ * This is intentionally minimal for the first scaffold.
+ * We'll refine after seeing the initial render.
+ */
