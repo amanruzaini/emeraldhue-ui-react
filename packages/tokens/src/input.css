@@ -147,12 +147,26 @@
     --color-border: var(--eh-colour-border-default);
     --color-input: var(--eh-colour-border-default);
     --color-ring: var(--eh-colour-border-focus-outer);
+
+    /* Accordion animations */
+    --animate-accordion-down: accordion-down 200ms ease-out;
+    --animate-accordion-up: accordion-up 200ms ease-out;
 }
 
 @layer base {
     html, body {
         -webkit-font-smoothing: antialiased;
         font-family: var(--eh-font-type-default);
+    }
+
+    @keyframes accordion-down {
+        from { height: 0; }
+        to { height: var(--radix-accordion-content-height); }
+    }
+
+    @keyframes accordion-up {
+        from { height: var(--radix-accordion-content-height); }
+        to { height: 0; }
     }
 }
 
