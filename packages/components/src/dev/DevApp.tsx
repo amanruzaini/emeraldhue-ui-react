@@ -36,6 +36,7 @@ import type { ButtonSize, ButtonVariant } from '../components/button'
 import { CheckboxField } from '../components/checkbox-field'
 import { CheckboxInput } from '../components/checkbox-input'
 import type { CheckboxInputSize } from '../components/checkbox-input'
+import { Accordion, AccordionItem } from '../components/accordion'
 
 const themes = [
   'theme-light',
@@ -578,6 +579,150 @@ export function DevApp() {
             </PreviewCard>
           ))}
         </div>
+      </PreviewSection>
+
+      <PreviewSection title="Accordion">
+        <div style={cardGridStyle}>
+          <PreviewCard title="Single (collapsible)">
+            <Accordion type="single" collapsible defaultValue="item-1">
+              <AccordionItem value="item-1" title="What is Emerald HUE?">
+                Emerald HUE is a React component library built with design tokens and CVA for
+                consistent, themeable UI across products.
+              </AccordionItem>
+              <AccordionItem value="item-2" title="How do I install it?">
+                Install via your package manager and import the components you need from the
+                library entry point.
+              </AccordionItem>
+              <AccordionItem value="item-3" title="Can I customise the theme?">
+                Yes — switch themes by changing the data-theme attribute on the root HTML element.
+                All tokens update automatically.
+              </AccordionItem>
+            </Accordion>
+          </PreviewCard>
+
+          <PreviewCard title="Multiple">
+            <Accordion type="multiple" defaultValue={['multi-1', 'multi-2']}>
+              <AccordionItem value="multi-1" title="First Section">
+                Content for the first section. Multiple items can be open at the same time.
+              </AccordionItem>
+              <AccordionItem value="multi-2" title="Second Section">
+                Content for the second section, also open by default.
+              </AccordionItem>
+              <AccordionItem value="multi-3" title="Third Section">
+                Content for the third section.
+              </AccordionItem>
+            </Accordion>
+          </PreviewCard>
+        </div>
+
+        <div style={{ height: '1.5rem' }} />
+
+        <div style={cardGridStyle}>
+          <PreviewCard title="With Subtitle">
+            <Accordion type="single" collapsible>
+              <AccordionItem
+                value="sub-1"
+                title="Account Settings"
+                subtitle="Manage your account preferences"
+              >
+                Update your email, password, and notification preferences here.
+              </AccordionItem>
+              <AccordionItem
+                value="sub-2"
+                title="Privacy & Security"
+                subtitle="Control your data and access"
+              >
+                Configure two-factor authentication, manage sessions, and review data sharing.
+              </AccordionItem>
+            </Accordion>
+          </PreviewCard>
+
+          <PreviewCard title="With Icon">
+            <Accordion type="single" collapsible>
+              <AccordionItem
+                value="icon-1"
+                title="Getting Started"
+                startIcon={<PlaceholderIcon />}
+              >
+                Follow the quickstart guide to set up your first project.
+              </AccordionItem>
+              <AccordionItem
+                value="icon-2"
+                title="Advanced Usage"
+                startIcon={<PlaceholderIcon />}
+                subtitle="For experienced developers"
+              >
+                Learn about custom hooks, compound components, and performance optimisation.
+              </AccordionItem>
+            </Accordion>
+          </PreviewCard>
+        </div>
+
+        <div style={{ height: '1.5rem' }} />
+
+        <div style={cardGridStyle}>
+          <PreviewCard title="With Badge">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="badge-1" title="Release Notes" showBadge badgeLabel="New">
+                Version 3.2 introduces the Accordion and KeyboardShortcut components.
+              </AccordionItem>
+              <AccordionItem value="badge-2" title="Migration Guide" showBadge badgeLabel="Updated">
+                Follow these steps to migrate from v2 to v3.
+              </AccordionItem>
+            </Accordion>
+          </PreviewCard>
+
+          <PreviewCard title="Disabled Items">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="dis-1" title="Available Section">
+                This section is interactive and can be expanded.
+              </AccordionItem>
+              <AccordionItem value="dis-2" title="Disabled Section" disabled>
+                This content is not reachable because the item is disabled.
+              </AccordionItem>
+              <AccordionItem
+                value="dis-3"
+                title="Disabled with Icon"
+                startIcon={<PlaceholderIcon />}
+                subtitle="Locked feature"
+                disabled
+              >
+                Upgrade your plan to access this feature.
+              </AccordionItem>
+            </Accordion>
+          </PreviewCard>
+        </div>
+
+        <div style={{ height: '1.5rem' }} />
+
+        <PreviewCard title="Kitchen Sink (all features)">
+          <Accordion type="single" collapsible>
+            <AccordionItem
+              value="ks-1"
+              title="Full Featured Item"
+              subtitle="With every option enabled"
+              startIcon={<PlaceholderIcon />}
+              showBadge
+              badgeLabel="New"
+            >
+              This item demonstrates all features: icon, subtitle, and badge together.
+            </AccordionItem>
+            <AccordionItem
+              value="ks-2"
+              title="Disabled Full Featured"
+              subtitle="All features but disabled"
+              startIcon={<PlaceholderIcon />}
+              showBadge
+              badgeLabel="Locked"
+              disabled
+            >
+              Cannot expand this item.
+            </AccordionItem>
+            <AccordionItem value="ks-3" title="Plain Item">
+              A simple item with no extras for contrast.
+            </AccordionItem>
+          </Accordion>
+        </PreviewCard>
       </PreviewSection>
     </div>
   )
