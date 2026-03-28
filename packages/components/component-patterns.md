@@ -40,16 +40,16 @@ When using shadcn/Radix as the base:
 2. **Do NOT use the generated file** — delete or ignore it. Write your own from scratch using EH tokens
 3. **CRITICAL:** After running `npx shadcn add`, verify `packages/components/src/input.css` has NOT been overwritten. It must contain exactly:
    ```css
-   @import "../../tokens/src/input.css";
+   @import '../../tokens/src/input.css';
    @source "./components/**/*.{ts,tsx}";
    @source "./dev/**/*.{ts,tsx}";
    ```
 4. Wrap Radix primitives in EH-styled components. Use Radix's `data-[state=*]` attribute selectors for state styling:
    ```tsx
    // ✅ correct — use Radix data attributes for open/closed states
-   'data-[state=open]:rotate-180'    // chevron rotation
-   'data-[state=open]:bg-brand'      // background on open
-   'data-[disabled]:opacity-50'      // Radix disabled attribute
+   'data-[state=open]:rotate-180'; // chevron rotation
+   'data-[state=open]:bg-brand'; // background on open
+   'data-[disabled]:opacity-50'; // Radix disabled attribute
    ```
 5. Add animation keyframes to `packages/tokens/src/tokens.css` if needed (e.g. Accordion expand/collapse)
 
@@ -237,19 +237,19 @@ The public React API must be **code-first and ergonomic**. Engineers should not 
 
 #### Naming conventions
 
-| Figma property                        | React prop              | Reason                                  |
-| ------------------------------------- | ----------------------- | --------------------------------------- |
-| `Type` (Primary, Secondary...)        | `variant`               | Standard React/shadcn convention        |
-| `Size` (xs, sm, md...)                | `size`                  | Already code-friendly                   |
-| `Label`                               | `children`              | Standard React pattern for text content |
-| `Icon Leading` (boolean) + icon slot  | `startIcon?: ReactNode` | Single prop, render when provided       |
-| `Icon Trailing` (boolean) + icon slot | `endIcon?: ReactNode`   | Single prop, render when provided       |
-| `Content` (Label+icon / Icon only)    | `iconOnly?: boolean`    | Or infer from children                  |
-| `Disabled`                            | `disabled`              | Standard HTML attribute (via ...props)  |
-| `Indicator` (boolean)                 | `indicator?: boolean`   | Already code-friendly                   |
-| `Online` (boolean)                    | `online?: boolean`      | Already code-friendly                   |
-| `Number` (boolean)                    | `count?: number`        | Single prop — shown when provided       |
-| `Badge` (boolean) + label             | `showBadge?: boolean` + `badgeLabel?: string` | Internal composition (see below)  |
+| Figma property                        | React prop                                    | Reason                                  |
+| ------------------------------------- | --------------------------------------------- | --------------------------------------- |
+| `Type` (Primary, Secondary...)        | `variant`                                     | Standard React/shadcn convention        |
+| `Size` (xs, sm, md...)                | `size`                                        | Already code-friendly                   |
+| `Label`                               | `children`                                    | Standard React pattern for text content |
+| `Icon Leading` (boolean) + icon slot  | `startIcon?: ReactNode`                       | Single prop, render when provided       |
+| `Icon Trailing` (boolean) + icon slot | `endIcon?: ReactNode`                         | Single prop, render when provided       |
+| `Content` (Label+icon / Icon only)    | `iconOnly?: boolean`                          | Or infer from children                  |
+| `Disabled`                            | `disabled`                                    | Standard HTML attribute (via ...props)  |
+| `Indicator` (boolean)                 | `indicator?: boolean`                         | Already code-friendly                   |
+| `Online` (boolean)                    | `online?: boolean`                            | Already code-friendly                   |
+| `Number` (boolean)                    | `count?: number`                              | Single prop — shown when provided       |
+| `Badge` (boolean) + label             | `showBadge?: boolean` + `badgeLabel?: string` | Internal composition (see below)        |
 
 #### Key rules
 
@@ -321,14 +321,16 @@ Some components need to render as different HTML elements depending on context. 
 ```tsx
 // TextLink renders as <a> when href is provided, <button> when not
 type TextLinkAsAnchor = TextLinkBaseProps &
-  Omit<React.ComponentPropsWithoutRef<'a'>, keyof TextLinkBaseProps> &
-  { href: string }
+  Omit<React.ComponentPropsWithoutRef<'a'>, keyof TextLinkBaseProps> & {
+    href: string;
+  };
 
 type TextLinkAsButton = TextLinkBaseProps &
-  Omit<React.ComponentPropsWithoutRef<'button'>, keyof TextLinkBaseProps> &
-  { href?: never }
+  Omit<React.ComponentPropsWithoutRef<'button'>, keyof TextLinkBaseProps> & {
+    href?: never;
+  };
 
-type TextLinkProps = TextLinkAsAnchor | TextLinkAsButton
+type TextLinkProps = TextLinkAsAnchor | TextLinkAsButton;
 
 // In the component:
 const Component = props.href ? 'a' : 'button';
