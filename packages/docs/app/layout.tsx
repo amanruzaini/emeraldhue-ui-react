@@ -1,6 +1,4 @@
-import { Footer, Layout, Navbar } from 'nextra-theme-docs'
 import { Head } from 'nextra/components'
-import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
 
@@ -16,33 +14,10 @@ export const metadata: Metadata = {
     'Emerald HUE (EH) design system — React component library for Petronas industrial environments.',
 }
 
-const navbar = (
-  <Navbar
-    logo={
-      <span style={{ fontWeight: 700 }}>
-        Emerald HUE
-      </span>
-    }
-    projectLink="https://www.figma.com/design/0qqUZvCf7MIcrRuJQla85o/Components-3.0"
-  />
-)
-
-const footer = (
-  <Footer>
-    <span>
-      © {new Date().getFullYear()} PETRONAS Digital Sdn Bhd. Emerald HUE
-      Design System.
-    </span>
-  </Footer>
-)
-
-export default async function RootLayout({ children }: { children: ReactNode }) {
-  const pageMap = await getPageMap()
-
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <Head>
-        {/* Inline script to prevent theme flash */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -57,16 +32,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         />
       </Head>
       <body>
-        <Layout
-          navbar={navbar}
-          pageMap={pageMap}
-          docsRepositoryBase="https://github.com/AmanSuryavanshi/emeraldhue-ui-react/tree/master/packages/docs"
-          footer={footer}
-          sidebar={{ defaultMenuCollapseLevel: 1 }}
-          editLink="Edit this page"
-        >
-          {children}
-        </Layout>
+        {children}
       </body>
     </html>
   )

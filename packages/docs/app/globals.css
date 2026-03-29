@@ -1,37 +1,209 @@
-/* Import EH tokens */
-@import '../../tokens/src/tokens.css';
+/*
+ * EH Design System CSS Pipeline for Docs Site
+ *
+ * IMPORTANT: @import "tailwindcss" MUST be directly in this file
+ * (not buried in an import chain) for Tailwind v4's PostCSS plugin
+ * to detect and process @theme inline, @source, and generate utilities.
+ */
+@import "tailwindcss";
 
 /*
- * Override Nextra theme CSS custom properties with EH design tokens.
- * Nextra uses CSS variables prefixed with --nextra-* and standard
- * next-themes for dark mode. We map EH semantic tokens to these.
- *
- * Reference: inspect Nextra's built-in style.css for the full
- * list of CSS custom properties available for override.
+ * Import the full EH component CSS pipeline:
+ *   components/src/input.css → tokens/src/input.css → tokens.css
+ * This brings in all --eh-* CSS custom properties and @layer utilities
+ * (bg-brand, text-all-white, border-default, etc.)
+ * The duplicate @import "tailwindcss" in the chain is deduplicated.
  */
+@import '../../components/src/input.css';
 
-:root {
-  /* Map EH brand colours to Nextra's primary accent */
-  --nextra-primary-hue: 162deg;
-  --nextra-primary-saturation: 100%;
+/*
+ * Tell Tailwind to scan component source files for utility classes.
+ */
+@source "../../components/src/components/**/*.{ts,tsx}";
+@source "../../components/src/dev/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+@source "./**/*.{ts,tsx,mdx}";
 
-  /* Use EH font */
-  --nextra-font-family: var(--eh-font-family-default, sans-serif);
+/*
+ * Map EH tokens to Tailwind's theme namespace.
+ * This ensures Tailwind generates utilities like p-6, text-body-sm, gap-2
+ * using EH token values.
+ *
+ * Keep in sync with packages/tokens/src/input.css @theme inline block.
+ */
+@theme inline {
+    --color-*: initial;
+    --font-*: initial;
+    --text-*: initial;
+    --font-weight-*: initial;
+    --shadow-*: initial;
+    --border-*: initial;
+    --border-width-*: initial;
+    --border-style-*: initial;
+    /* --spacing-*: initial; */
+    --radius-*: initial;
+    --ease-* : initial;
+    --leading-* : initial;
+    --opacity-* : initial;
+
+    /* Font Families */
+    --font-default: var(--eh-font-type-default);
+
+    /* Numeric OpenType Feature */
+    --eh-font-feature-ui: "ss02" 1, "cv01" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv05" 1, "cv07" 1, "cv09" 1, "cv10" 1;
+    --eh-font-variant-numeric-ui: lining-nums tabular-nums slashed-zero;
+
+    /* Font Weights */
+    --font-weight-regular: var(--eh-font-weight-regular);
+    --font-weight-medium: var(--eh-font-weight-medium);
+    --font-weight-semibold: var(--eh-font-weight-semibold);
+    --font-weight-bold: var(--eh-font-weight-bold);
+
+    /* Font Size */
+    --text-display-1: var(--eh-font-size-display-1);
+    --text-display-1--line-height: var(--eh-font-line-height-display-1);
+    --text-display-1--letter-spacing: var(--eh-font-letter-spacing-display-1);
+
+    --text-display-2: var(--eh-font-size-display-2);
+    --text-display-2--line-height: var(--eh-font-line-height-display-2);
+    --text-display-2--letter-spacing: var(--eh-font-letter-spacing-display-2);
+
+    --text-heading-1: var(--eh-font-size-heading-1);
+    --text-heading-1--line-height: var(--eh-font-line-height-heading-1);
+    --text-heading-1--letter-spacing: var(--eh-font-letter-spacing-heading-1);
+
+    --text-heading-2: var(--eh-font-size-heading-2);
+    --text-heading-2--line-height: var(--eh-font-line-height-heading-2);
+    --text-heading-2--letter-spacing: var(--eh-font-letter-spacing-heading-2);
+
+    --text-heading-3: var(--eh-font-size-heading-3);
+    --text-heading-3--line-height: var(--eh-font-line-height-heading-3);
+    --text-heading-3--letter-spacing: var(--eh-font-letter-spacing-heading-3);
+
+    --text-heading-4: var(--eh-font-size-heading-4);
+    --text-heading-4--line-height: var(--eh-font-line-height-heading-4);
+    --text-heading-4--letter-spacing: var(--eh-font-letter-spacing-heading-4);
+
+    --text-heading-5: var(--eh-font-size-heading-5);
+    --text-heading-5--line-height: var(--eh-font-line-height-heading-5);
+    --text-heading-5--letter-spacing: var(--eh-font-letter-spacing-heading-5);
+
+    --text-heading-6: var(--eh-font-size-heading-6);
+    --text-heading-6--line-height: var(--eh-font-line-height-heading-6);
+    --text-heading-6--letter-spacing: var(--eh-font-letter-spacing-heading-6);
+
+    --text-body-lg: var(--eh-font-size-body-lg);
+    --text-body-lg--line-height: var(--eh-font-line-height-body-lg);
+    --text-body-lg--letter-spacing: var(--eh-font-letter-spacing-body-lg);
+
+    --text-body-md: var(--eh-font-size-body-md);
+    --text-body-md--line-height: var(--eh-font-line-height-body-md);
+    --text-body-md--letter-spacing: var(--eh-font-letter-spacing-body-md);
+
+    --text-body-sm: var(--eh-font-size-body-sm);
+    --text-body-sm--line-height: var(--eh-font-line-height-body-sm);
+    --text-body-sm--letter-spacing: var(--eh-font-letter-spacing-body-sm);
+
+    --text-body-xs: var(--eh-font-size-body-xs);
+    --text-body-xs--line-height: var(--eh-font-line-height-body-xs);
+    --text-body-xs--letter-spacing: var(--eh-font-letter-spacing-body-xs);
+
+    /* Spacing */
+    --spacing-0: var(--eh-spacing-0);
+    --spacing-1: var(--eh-spacing-1);
+    --spacing-2: var(--eh-spacing-2);
+    --spacing-3: var(--eh-spacing-3);
+    --spacing-4: var(--eh-spacing-4);
+    --spacing-5: var(--eh-spacing-5);
+    --spacing-6: var(--eh-spacing-6);
+    --spacing-7: var(--eh-spacing-7);
+    --spacing-8: var(--eh-spacing-8);
+    --spacing-9: var(--eh-spacing-9);
+    --spacing-10: var(--eh-spacing-10);
+    --spacing-11: var(--eh-spacing-11);
+    --spacing-12: var(--eh-spacing-12);
+    --spacing-13: var(--eh-spacing-13);
+    --spacing-14: var(--eh-spacing-14);
+    --spacing-15: var(--eh-spacing-15);
+    --spacing-16: var(--eh-spacing-16);
+    --spacing-20: var(--eh-spacing-20);
+    --spacing-24: var(--eh-spacing-24);
+    --spacing-32: var(--eh-spacing-32);
+    --spacing-40: var(--eh-spacing-40);
+    --spacing-48: var(--eh-spacing-48);
+    --spacing-56: var(--eh-spacing-56);
+    --spacing-64: var(--eh-spacing-64);
+    --spacing-80: var(--eh-spacing-80);
+    --spacing-96: var(--eh-spacing-96);
+    --spacing-112: var(--eh-spacing-112);
+    --spacing-128: var(--eh-spacing-128);
+
+    /* Layout */
+    --spacing-layout-margin: var(--eh-spacing-layout-margin);
+    --spacing-layout-margin-fluid: var(--eh-spacing-layout-margin-fluid);
+    --spacing-layout-gutter: var(--eh-spacing-layout-gutter);
+    --spacing-layout-gutter-fluid: var(--eh-spacing-layout-gutter-fluid);
+    --spacing-layout-container: var(--eh-layout-container);
+    --spacing-layout-breakpoints: var(--eh-layout-breakpoints);
+
+    /* Border Radius */
+    --radius-none: var(--eh-border-radius-none);
+    --radius-xs: var(--eh-border-radius-xs);
+    --radius-sm: var(--eh-border-radius-sm);
+    --radius-md: var(--eh-border-radius-md);
+    --radius-lg: var(--eh-border-radius-lg);
+    --radius-xl: var(--eh-border-radius-xl);
+    --radius-2xl: var(--eh-border-radius-2xl);
+    --radius-full: var(--eh-border-radius-rounded);
+
+    /* Semantic colour bridge */
+    --color-background: var(--eh-colour-bg-default);
+    --color-foreground: var(--eh-colour-text-default);
+    --color-primary: var(--eh-colour-bg-brand);
+    --color-primary-foreground: var(--eh-colour-text-all-white);
+    --color-secondary: var(--eh-colour-bg-neutral);
+    --color-secondary-foreground: var(--eh-colour-text-neutral);
+    --color-destructive: var(--eh-colour-bg-error);
+    --color-destructive-foreground: var(--eh-colour-text-all-white);
+    --color-muted: var(--eh-colour-bg-neutral-container);
+    --color-muted-foreground: var(--eh-colour-text-weak);
+    --color-accent: var(--eh-colour-bg-accent);
+    --color-accent-foreground: var(--eh-colour-text-accent);
+    --color-card: var(--eh-colour-bg-default);
+    --color-card-foreground: var(--eh-colour-text-default);
+    --color-popover: var(--eh-colour-bg-default);
+    --color-popover-foreground: var(--eh-colour-text-default);
+    --color-border: var(--eh-colour-border-default);
+    --color-input: var(--eh-colour-border-default);
+    --color-ring: var(--eh-colour-border-focus-outer);
+
+    /* Accordion animations */
+    --animate-accordion-down: accordion-down 200ms ease-out;
+    --animate-accordion-up: accordion-up 200ms ease-out;
+}
+
+@layer base {
+    html, body {
+        -webkit-font-smoothing: antialiased;
+        font-family: var(--eh-font-type-default);
+    }
+
+    @keyframes accordion-down {
+        from { height: 0; }
+        to { height: var(--radix-accordion-content-height); }
+    }
+
+    @keyframes accordion-up {
+        from { height: var(--radix-accordion-content-height); }
+        to { height: 0; }
+    }
 }
 
 /*
- * NOTE FOR DEVELOPER:
- * After install, inspect the rendered Nextra page in browser DevTools
- * to find the exact CSS custom property names Nextra 4 uses.
- * Then expand this file to map more EH tokens.
- * Key areas to brand:
- * - Sidebar background, text, hover states
- * - Navbar background and border
- * - Content area typography (font-size, line-height, font-weight)
- * - Code block styling
- * - Link colours (use --eh-colour-text-brand)
- * - Focus ring styles (use EH focus-ring tokens)
- *
- * This is intentionally minimal for the first scaffold.
- * We'll refine after seeing the initial render.
+ * Nextra theme CSS variable overrides
  */
+:root {
+  --nextra-primary-hue: 162deg;
+  --nextra-primary-saturation: 100%;
+  --nextra-font-family: var(--eh-font-family-default, sans-serif);
+}
