@@ -592,7 +592,6 @@ export type {
   ButtonProps,
   ButtonVariant,
   ButtonSize,
-  ButtonContent,
 } from './Button';
 ```
 

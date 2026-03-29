@@ -1,1 +1,7 @@
-{}
+{
+  "/docs/page": "app/docs/page.js",
+  "/docs/getting-started/page": "app/docs/getting-started/page.js",
+  "/docs/accordion/page": "app/docs/accordion/page.js",
+  "/docs/button/page": "app/docs/button/page.js",
+  "/docs/badge/page": "app/docs/badge/page.js"
+}
