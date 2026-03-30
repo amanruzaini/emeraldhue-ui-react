@@ -1,5 +1,11 @@
 # EH Component Patterns
 
+> **Last updated:** 2026-03-30
+>
+> | Date | Change |
+> | --- | --- |
+> | 2026-03-30 | Restructured into stable rulebook only. Moved workarounds and token gap details to `known-issues.md`, per-component a11y checklists to `workflow.md`, component status notes to `eh-project-handoff.md`. |
+
 A reference guide for building components in the Emerald HUE component library.
 Follow these patterns consistently across all components.
 
@@ -77,14 +83,7 @@ Defined in `@layer utilities` in `packages/tokens/src/input.css`.
 'bg-[var(--eh-colour-bg-brand)]';
 ```
 
-**Exception — missing hover/disabled pseudo-class variants:** Some colour utilities only define the plain class (e.g. `.bg-brand-inverted-button`) without a `.hover\:bg-brand-inverted-button:hover` variant. In these cases, use the arbitrary value form as a workaround:
-
-```tsx
-// When no hover: pseudo variant exists in the token file
-'hover:bg-[var(--eh-colour-bg-brand-inverted-button)]';
-```
-
-Track these workarounds — they should be cleaned up when the token file adds the missing variants.
+**Exception — missing pseudo-class variants:** Some colour utilities lack a `hover:` or `disabled:` variant in the token file. In those cases, use the arbitrary value form: `hover:bg-[var(--eh-colour-bg-brand-inverted-button)]`. See `known-issues.md` for the full list of affected utilities.
 
 ### Spacing — use EH token utilities with awareness
 
@@ -98,16 +97,7 @@ However EH uses a 2px base scale while standard Tailwind uses 4px. The numbers m
 | p-6   | 12px             | 24px              |
 | p-8   | 16px             | 32px              |
 
-Prefer named spacing utilities in component code:
-
-```tsx
-'p-4';
-'px-6';
-'py-4';
-'gap-2';
-```
-
-Spacing tokens respond to `data-text-resize` switching automatically. Hardcoded pixel values do not.
+Prefer named spacing utilities in component code. Spacing tokens respond to `data-text-resize` switching automatically. Hardcoded pixel values do not.
 
 ### Border widths — use EH utility class names
 
@@ -149,21 +139,13 @@ Never use plain Tailwind `border-2`, `border-4` etc. — those are hardcoded pix
 
 `text-body-*` utilities already carry the EH line-height and letter-spacing from the theme. Do not add a second `tracking-*` class unless you are intentionally deviating from the text token.
 
-#### Non-standard typography composite pattern
-
-Some components require a font size from one text token but a line height from another (e.g. body-sm font size with body-xs line height). This occurs in Badge components and TextLink `sm` size. In these cases, you cannot use the `text-body-*` utility because it carries the wrong line height. Instead, use arbitrary values:
+**Non-standard typography composite:** When a component requires a font size from one token but a line height from another (e.g. body-sm font + body-xs line-height), use arbitrary values instead of the `text-body-*` utility:
 
 ```tsx
-// ✅ correct — when the standard text utility carries the wrong line height
 'text-[length:var(--eh-font-size-body-sm)]';
 'leading-[var(--eh-font-line-height-body-xs)]';
 'tracking-[var(--eh-font-letter-spacing-body-sm)]';
-
-// ❌ wrong — this carries body-sm's line height, not body-xs
-'text-body-sm';
 ```
-
-This pattern has been used in: BadgeNonSemantic, BadgeSemantic, BadgeNotificationNonSemantic, BadgeNotificationSemantic, TextLink (sm size).
 
 ### Icon sizes — use EH utility class names
 
@@ -198,7 +180,7 @@ For icon sizing inside components, use the CSS custom property pattern:
 'focus-visible:outline-none';
 ```
 
-**Always add `focus-visible:outline-none` on interactive components.** Browsers show a native orange/blue outline alongside the EH focus-ring box-shadow. This was discovered during the ButtonGroup build and applies to all focusable elements.
+**Always add `focus-visible:outline-none` on interactive components.** Browsers show a native outline alongside the EH focus-ring box-shadow.
 
 ---
 
@@ -305,15 +287,6 @@ badgeLabel?: string  // defaults to "New"
 
 Use the flexible `ReactNode` slot pattern instead when consumers need to pass different component types or styles.
 
-#### What this means for existing components
-
-- **Button** — needs refactoring (see separate task)
-- **AvatarSingle** — mostly fine. `indicator`, `online`, `logoIcon`, `initials`, `src`, `alt` are already code-friendly. Keep as-is.
-- **AvatarGroup** — fine. `size`, `max`, `children` are code-first.
-- **Badges** — `label` prop should become `children` in future iteration. Current API is acceptable since badges are simple. Low priority refactor.
-- **TextLink** — code-first from the start. `variant`, `size`, `startIcon`, `endIcon`, `iconOnly`, `children`.
-- **Accordion** — code-first. `title`, `subtitle`, `startIcon`, `showBadge`, `badgeLabel`, `children`.
-
 ### Polymorphic components
 
 Some components need to render as different HTML elements depending on context. Use the "check for href" pattern:
@@ -356,13 +329,9 @@ Never create a `state` prop on a React component.
 
 ## Accessibility (WCAG 2.1 AA compliance)
 
-Every EH component must meet WCAG 2.1 Level AA. This is not optional — the library targets industrial environments (oil rigs, control centres) where accessibility failures can have safety implications. Operators may be using screen readers, keyboard-only navigation, or working in high-contrast/colour-blind modes.
+Every EH component must meet WCAG 2.1 Level AA. This is not optional — the library targets industrial environments where accessibility failures can have safety implications.
 
-### Foundational rules
-
-#### 1. Use semantic HTML elements
-
-Choose the correct HTML element for the component's purpose. The right element provides built-in keyboard behaviour, focus management, and screen reader semantics for free.
+### 1. Use semantic HTML elements
 
 | Component type    | Element                             | Why                                                         |
 | ----------------- | ----------------------------------- | ----------------------------------------------------------- |
@@ -374,19 +343,16 @@ Choose the correct HTML element for the component's purpose. The right element p
 
 Never use a `<div>` or `<span>` for interactive elements. Never use `<button>` for navigation.
 
-#### 2. Keyboard accessibility
+### 2. Keyboard accessibility
 
-Every interactive component must be fully operable with keyboard alone.
+- **Focusable:** Use native focusable elements (`<button>`, `<a>`, `<input>`) — avoid `tabIndex={0}` on divs unless absolutely necessary.
+- **Activation:** Buttons activate on Enter and Space. Links activate on Enter.
+- **Focus visible:** Use `focus-visible:` pseudo-class (not `focus:`). **Always pair with `focus-visible:outline-none`**.
+- **Focus trapping:** Only for blocking overlays (Modal, Dialog) — NOT for inline components (Alert, Accordion). Use shadcn/Radix base for components that need trapping.
 
-- **Focusable:** Interactive elements must receive focus via Tab key. Use native focusable elements (`<button>`, `<a>`, `<input>`) — avoid `tabIndex={0}` on divs unless absolutely necessary.
-- **Activation:** Buttons activate on Enter and Space. Links activate on Enter. Custom widgets must match expected keyboard patterns.
-- **Focus visible:** Every focusable element must have a visible focus indicator. Use `focus-visible:` pseudo-class (not `focus:`) so the indicator only shows on keyboard navigation, not mouse clicks. **Always pair with `focus-visible:outline-none`** to suppress browser default outlines.
-- **Focus trapping:** Modal dialogs and dropdowns must trap focus within the component when open. Use shadcn/Radix base for these components — they handle trapping automatically. Note: inline components (Alert, Accordion) do NOT need focus trapping — only blocking overlays (Modal, Dialog) do.
-- **Skip navigation:** Not a component concern, but document for app-level implementation.
+### 3. ARIA attributes
 
-#### 3. ARIA attributes
-
-Use ARIA only when HTML semantics are insufficient. Prefer native HTML over ARIA.
+Use ARIA only when HTML semantics are insufficient.
 
 | Pattern      | Use                                               | Example                                                    |
 | ------------ | ------------------------------------------------- | ---------------------------------------------------------- |
@@ -396,88 +362,24 @@ Use ARIA only when HTML semantics are insufficient. Prefer native HTML over ARIA
 | States       | `aria-disabled`, `aria-expanded`, `aria-selected` | Accordions, dropdowns, toggles                             |
 | Roles        | `role="status"`, `role="alert"`                   | Notification badges, error messages                        |
 
-**Never add ARIA that contradicts native semantics.** A `<button>` already has `role="button"` — don't add it again.
+Never add ARIA that contradicts native semantics.
 
-#### 4. Colour and contrast
+### 4. Colour and contrast
 
-EH tokens handle colour contrast through the theme system. Components must:
+- **Never hardcode colours** — use EH tokens which meet contrast ratios across all 6 theme modes.
+- **Never rely on colour alone** to convey meaning — always pair with icon, text, or shape.
+- **Trust the token system** — if a component uses tokens correctly, contrast is handled.
 
-- **Never hardcode colours** — always use EH tokens which are designed to meet contrast ratios across all 6 theme modes (light, dark, high-contrast, colour-blind).
-- **Never rely on colour alone** to convey meaning. Semantic badges should include an icon or text label alongside the colour. Status indicators should have a shape or text alternative, not just a colour change.
-- **Trust the token system** — the EH design team has validated contrast ratios for all token combinations across themes. If a component uses tokens correctly, contrast is handled.
+### 5. Screen reader considerations
 
-#### 5. Screen reader considerations
+- **Decorative images:** `alt=""` (empty string).
+- **Meaningful images:** Require `alt` prop from the consumer.
+- **Icon-only buttons/links:** Must have `aria-label`. Icon wrappers should have `aria-hidden="true"`.
+- **Hidden text:** Use `sr-only` (Tailwind utility) when needed.
 
-- **Decorative images:** Use `alt=""` (empty string) for images that don't convey information. This is already the default in AvatarSingle.
-- **Meaningful images:** Require an `alt` prop from the consumer when the image conveys information.
-- **Icon-only buttons:** Must have `aria-label` describing the action. The component should document this requirement in JSDoc.
-- **Icon-only links:** Same as buttons — must have `aria-label`. Icon wrappers should have `aria-hidden="true"`.
-- **Badges and status indicators:** Consider adding `role="status"` for dynamic notification counts. For static badges, no role is needed.
-- **Hidden text:** Use `sr-only` (Tailwind utility) when screen readers need text that's not visually rendered.
+### 6. Runtime accessibility warnings (development only)
 
----
-
-### Per-component accessibility checklist
-
-Use this checklist when building or reviewing any component. Not every item applies to every component — use judgement.
-
-#### Interactive components (Button, Link, Toggle, Input, Select, etc.)
-
-- [ ] Uses correct semantic HTML element
-- [ ] Focusable via Tab key without `tabIndex` hack
-- [ ] Visible focus indicator via `focus-visible:` styles
-- [ ] `focus-visible:outline-none` added to suppress browser default outline
-- [ ] Keyboard activation matches expected pattern (Enter/Space for buttons, Enter for links)
-- [ ] `aria-label` required/documented for icon-only variants
-- [ ] Disabled state uses `disabled` attribute (not just visual styling)
-- [ ] Disabled state communicated to assistive technology
-- [ ] For polymorphic components: `<a>` disabled via `aria-disabled` + click prevention
-
-#### Display components (Badge, Avatar, Tag, Chip, etc.)
-
-- [ ] Uses appropriate element (`<span>` for inline, `<div>` for block)
-- [ ] Decorative images have `alt=""`
-- [ ] Does not rely on colour alone for meaning (icon or text accompanies colour)
-- [ ] Dynamic content (notification counts) uses `aria-live` or `role="status"` where appropriate
-
-#### Container components (Dialog, Dropdown, Accordion, Tooltip, etc.)
-
-- [ ] Focus trapped when open (handled by shadcn/Radix base) — only for blocking overlays
-- [ ] Escape key closes the component
-- [ ] Focus returns to trigger element on close
-- [ ] `aria-expanded` on trigger element
-- [ ] `role="dialog"` / `role="menu"` / `role="tooltip"` as appropriate
-- [ ] `aria-labelledby` or `aria-label` on the container
-
----
-
-### What this means for props
-
-When a component needs accessibility information from the consumer, make it easy:
-
-```tsx
-// Icon-only button — aria-label is essential
-interface ButtonProps {
-  /** Required when iconOnly is true — describes the button action for screen readers */
-  'aria-label'?: string;
-}
-
-// Avatar image — alt text for screen readers
-interface AvatarSingleProps {
-  /** Alt text for the avatar image. Use "" for decorative avatars, descriptive text for meaningful ones */
-  alt?: string;
-}
-```
-
-**Document the a11y expectation in JSDoc.** If an `aria-label` is expected for icon-only mode, say so in the comment. If `alt` should be empty for decorative usage, say so.
-
-Do NOT enforce `aria-label` as a required prop at the TypeScript level — it's inherited from `HTMLAttributes` and making it required would break the type extension. Instead, add a runtime warning (console.warn in development) if an icon-only button is rendered without `aria-label`.
-
----
-
-### Runtime accessibility warnings (development only)
-
-For critical accessibility requirements, add development-only console warnings:
+For critical a11y gaps (icon-only buttons without labels, images without alt text), add a development-only `console.warn`. Keep these lightweight — only for the most critical gaps.
 
 ```tsx
 if (process.env.NODE_ENV === 'development') {
@@ -489,7 +391,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-Keep these lightweight — only for the most critical gaps (icon-only buttons without labels, images without alt text). Don't over-warn.
+Document the a11y expectation in JSDoc. Do NOT enforce `aria-label` as a required TypeScript prop — it's inherited from `HTMLAttributes`. Use runtime warnings instead.
 
 ---
 
@@ -549,7 +451,7 @@ const twMerge = extendTailwindMerge({
 
 ---
 
-## Code Connect (Button.figma.tsx)
+## Code Connect (Component.figma.tsx)
 
 Every component needs a `.figma.tsx` file for Code Connect. This file is never bundled — only used by the Figma CLI.
 
