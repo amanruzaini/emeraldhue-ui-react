@@ -30,7 +30,28 @@ Only split into more files if the component is genuinely large (e.g. DataTable, 
 
 Components that use shadcn base: DropdownMenu, Dialog, Accordion, Select, Tooltip, Popover, NavigationMenu.
 
-Components written from scratch: Button, Badge, Tag, Chip, and others with simple behaviour.
+Components written from scratch: Button, Badge, Tag, Chip, TextLink, KeyboardShortcut, Alert, and others with simple behaviour.
+
+### shadcn override workflow (established with Accordion)
+
+When using shadcn/Radix as the base:
+
+1. Run `npx shadcn add <component>` to install the Radix dependency
+2. **Do NOT use the generated file** — delete or ignore it. Write your own from scratch using EH tokens
+3. **CRITICAL:** After running `npx shadcn add`, verify `packages/components/src/input.css` has NOT been overwritten. It must contain exactly:
+   ```css
+   @import '../../tokens/src/input.css';
+   @source "./components/**/*.{ts,tsx}";
+   @source "./dev/**/*.{ts,tsx}";
+   ```
+4. Wrap Radix primitives in EH-styled components. Use Radix's `data-[state=*]` attribute selectors for state styling:
+   ```tsx
+   // ✅ correct — use Radix data attributes for open/closed states
+   'data-[state=open]:rotate-180'; // chevron rotation
+   'data-[state=open]:bg-brand'; // background on open
+   'data-[disabled]:opacity-50'; // Radix disabled attribute
+   ```
+5. Add animation keyframes to `packages/tokens/src/tokens.css` if needed (e.g. Accordion expand/collapse)
 
 ---
 
@@ -55,6 +76,15 @@ Defined in `@layer utilities` in `packages/tokens/src/input.css`.
 // ❌ wrong — arbitrary value not needed for colours
 'bg-[var(--eh-colour-bg-brand)]';
 ```
+
+**Exception — missing hover/disabled pseudo-class variants:** Some colour utilities only define the plain class (e.g. `.bg-brand-inverted-button`) without a `.hover\:bg-brand-inverted-button:hover` variant. In these cases, use the arbitrary value form as a workaround:
+
+```tsx
+// When no hover: pseudo variant exists in the token file
+'hover:bg-[var(--eh-colour-bg-brand-inverted-button)]';
+```
+
+Track these workarounds — they should be cleaned up when the token file adds the missing variants.
 
 ### Spacing — use EH token utilities with awareness
 
@@ -99,6 +129,7 @@ Never use plain Tailwind `border-2`, `border-4` etc. — those are hardcoded pix
 // ✅ correct — mapped via @theme inline
 'rounded-md'; // → var(--eh-border-radius-md)
 'rounded-lg'; // → var(--eh-border-radius-lg)
+'rounded-full'; // → var(--eh-border-radius-rounded) — confirmed token-compliant
 ```
 
 ### Typography — use EH utility class names
@@ -118,6 +149,22 @@ Never use plain Tailwind `border-2`, `border-4` etc. — those are hardcoded pix
 
 `text-body-*` utilities already carry the EH line-height and letter-spacing from the theme. Do not add a second `tracking-*` class unless you are intentionally deviating from the text token.
 
+#### Non-standard typography composite pattern
+
+Some components require a font size from one text token but a line height from another (e.g. body-sm font size with body-xs line height). This occurs in Badge components and TextLink `sm` size. In these cases, you cannot use the `text-body-*` utility because it carries the wrong line height. Instead, use arbitrary values:
+
+```tsx
+// ✅ correct — when the standard text utility carries the wrong line height
+'text-[length:var(--eh-font-size-body-sm)]';
+'leading-[var(--eh-font-line-height-body-xs)]';
+'tracking-[var(--eh-font-letter-spacing-body-sm)]';
+
+// ❌ wrong — this carries body-sm's line height, not body-xs
+'text-body-sm';
+```
+
+This pattern has been used in: BadgeNonSemantic, BadgeSemantic, BadgeNotificationNonSemantic, BadgeNotificationSemantic, TextLink (sm size).
+
 ### Icon sizes — use EH utility class names
 
 ```tsx
@@ -129,6 +176,15 @@ Never use plain Tailwind `border-2`, `border-4` etc. — those are hardcoded pix
 
 The existing `icon-xs` / `icon-sm` / `icon-md` utilities are for `font-size`. Use `size-icon-*` when the wrapper needs tokenized `width` and `height`.
 
+For icon sizing inside components, use the CSS custom property pattern:
+
+```tsx
+// ✅ correct — icon size via CSS custom property, responds to text-resize
+'[--icon-size:var(--eh-icon-md)]';
+// Then on the icon wrapper:
+'w-[var(--icon-size)] h-[var(--icon-size)]';
+```
+
 ### States and rings — use EH utility class names
 
 ```tsx
@@ -137,7 +193,12 @@ The existing `icon-xs` / `icon-sm` / `icon-md` utilities are for `font-size`. Us
 'focus-visible:focus-ring-bezel';
 'hover:hover-ring-bezel';
 'disabled:no-ring';
+
+// ✅ always include — suppresses browser default outline
+'focus-visible:outline-none';
 ```
+
+**Always add `focus-visible:outline-none` on interactive components.** Browsers show a native orange/blue outline alongside the EH focus-ring box-shadow. This was discovered during the ButtonGroup build and applies to all focusable elements.
 
 ---
 
@@ -176,18 +237,19 @@ The public React API must be **code-first and ergonomic**. Engineers should not 
 
 #### Naming conventions
 
-| Figma property                        | React prop              | Reason                                  |
-| ------------------------------------- | ----------------------- | --------------------------------------- |
-| `Type` (Primary, Secondary...)        | `variant`               | Standard React/shadcn convention        |
-| `Size` (xs, sm, md...)                | `size`                  | Already code-friendly                   |
-| `Label`                               | `children`              | Standard React pattern for text content |
-| `Icon Leading` (boolean) + icon slot  | `startIcon?: ReactNode` | Single prop, render when provided       |
-| `Icon Trailing` (boolean) + icon slot | `endIcon?: ReactNode`   | Single prop, render when provided       |
-| `Content` (Label+icon / Icon only)    | `iconOnly?: boolean`    | Or infer from children                  |
-| `Disabled`                            | `disabled`              | Standard HTML attribute (via ...props)  |
-| `Indicator` (boolean)                 | `indicator?: boolean`   | Already code-friendly                   |
-| `Online` (boolean)                    | `online?: boolean`      | Already code-friendly                   |
-| `Number` (boolean)                    | `count?: number`        | Single prop — shown when provided       |
+| Figma property                        | React prop                                    | Reason                                  |
+| ------------------------------------- | --------------------------------------------- | --------------------------------------- |
+| `Type` (Primary, Secondary...)        | `variant`                                     | Standard React/shadcn convention        |
+| `Size` (xs, sm, md...)                | `size`                                        | Already code-friendly                   |
+| `Label`                               | `children`                                    | Standard React pattern for text content |
+| `Icon Leading` (boolean) + icon slot  | `startIcon?: ReactNode`                       | Single prop, render when provided       |
+| `Icon Trailing` (boolean) + icon slot | `endIcon?: ReactNode`                         | Single prop, render when provided       |
+| `Content` (Label+icon / Icon only)    | `iconOnly?: boolean`                          | Or infer from children                  |
+| `Disabled`                            | `disabled`                                    | Standard HTML attribute (via ...props)  |
+| `Indicator` (boolean)                 | `indicator?: boolean`                         | Already code-friendly                   |
+| `Online` (boolean)                    | `online?: boolean`                            | Already code-friendly                   |
+| `Number` (boolean)                    | `count?: number`                              | Single prop — shown when provided       |
+| `Badge` (boolean) + label             | `showBadge?: boolean` + `badgeLabel?: string` | Internal composition (see below)        |
 
 #### Key rules
 
@@ -228,12 +290,54 @@ figma.connect(Button, FIGMA_URL, {
 })
 ```
 
+#### Internal composition pattern
+
+When a component renders another EH component internally with fixed styling (e.g. Accordion renders BadgeNonSemantic), use a simple boolean + string prop pair rather than a flexible ReactNode slot:
+
+```tsx
+// ✅ Internal composition — fixed styling, simple API
+showBadge?: boolean
+badgeLabel?: string  // defaults to "New"
+
+// Component renders internally:
+{showBadge && <BadgeNonSemantic size="sm" appearance="Inverted" colour="Blue Grey">{badgeLabel ?? 'New'}</BadgeNonSemantic>}
+```
+
+Use the flexible `ReactNode` slot pattern instead when consumers need to pass different component types or styles.
+
 #### What this means for existing components
 
 - **Button** — needs refactoring (see separate task)
 - **AvatarSingle** — mostly fine. `indicator`, `online`, `logoIcon`, `initials`, `src`, `alt` are already code-friendly. Keep as-is.
 - **AvatarGroup** — fine. `size`, `max`, `children` are code-first.
 - **Badges** — `label` prop should become `children` in future iteration. Current API is acceptable since badges are simple. Low priority refactor.
+- **TextLink** — code-first from the start. `variant`, `size`, `startIcon`, `endIcon`, `iconOnly`, `children`.
+- **Accordion** — code-first. `title`, `subtitle`, `startIcon`, `showBadge`, `badgeLabel`, `children`.
+
+### Polymorphic components
+
+Some components need to render as different HTML elements depending on context. Use the "check for href" pattern:
+
+```tsx
+// TextLink renders as <a> when href is provided, <button> when not
+type TextLinkAsAnchor = TextLinkBaseProps &
+  Omit<React.ComponentPropsWithoutRef<'a'>, keyof TextLinkBaseProps> & {
+    href: string;
+  };
+
+type TextLinkAsButton = TextLinkBaseProps &
+  Omit<React.ComponentPropsWithoutRef<'button'>, keyof TextLinkBaseProps> & {
+    href?: never;
+  };
+
+type TextLinkProps = TextLinkAsAnchor | TextLinkAsButton;
+
+// In the component:
+const Component = props.href ? 'a' : 'button';
+return <Component ref={ref} {...props} />;
+```
+
+For `<a>` elements, disabled is not a native HTML attribute — handle disabled links by adding `aria-disabled="true"`, `tabIndex={-1}`, and `role="link"` and preventing click via `onClick={e => e.preventDefault()}`.
 
 ### State props are never React props
 
@@ -276,8 +380,8 @@ Every interactive component must be fully operable with keyboard alone.
 
 - **Focusable:** Interactive elements must receive focus via Tab key. Use native focusable elements (`<button>`, `<a>`, `<input>`) — avoid `tabIndex={0}` on divs unless absolutely necessary.
 - **Activation:** Buttons activate on Enter and Space. Links activate on Enter. Custom widgets must match expected keyboard patterns.
-- **Focus visible:** Every focusable element must have a visible focus indicator. Use `focus-visible:` pseudo-class (not `focus:`) so the indicator only shows on keyboard navigation, not mouse clicks.
-- **Focus trapping:** Modal dialogs and dropdowns must trap focus within the component when open. Use shadcn/Radix base for these components — they handle trapping automatically.
+- **Focus visible:** Every focusable element must have a visible focus indicator. Use `focus-visible:` pseudo-class (not `focus:`) so the indicator only shows on keyboard navigation, not mouse clicks. **Always pair with `focus-visible:outline-none`** to suppress browser default outlines.
+- **Focus trapping:** Modal dialogs and dropdowns must trap focus within the component when open. Use shadcn/Radix base for these components — they handle trapping automatically. Note: inline components (Alert, Accordion) do NOT need focus trapping — only blocking overlays (Modal, Dialog) do.
 - **Skip navigation:** Not a component concern, but document for app-level implementation.
 
 #### 3. ARIA attributes
@@ -307,6 +411,7 @@ EH tokens handle colour contrast through the theme system. Components must:
 - **Decorative images:** Use `alt=""` (empty string) for images that don't convey information. This is already the default in AvatarSingle.
 - **Meaningful images:** Require an `alt` prop from the consumer when the image conveys information.
 - **Icon-only buttons:** Must have `aria-label` describing the action. The component should document this requirement in JSDoc.
+- **Icon-only links:** Same as buttons — must have `aria-label`. Icon wrappers should have `aria-hidden="true"`.
 - **Badges and status indicators:** Consider adding `role="status"` for dynamic notification counts. For static badges, no role is needed.
 - **Hidden text:** Use `sr-only` (Tailwind utility) when screen readers need text that's not visually rendered.
 
@@ -321,10 +426,12 @@ Use this checklist when building or reviewing any component. Not every item appl
 - [ ] Uses correct semantic HTML element
 - [ ] Focusable via Tab key without `tabIndex` hack
 - [ ] Visible focus indicator via `focus-visible:` styles
+- [ ] `focus-visible:outline-none` added to suppress browser default outline
 - [ ] Keyboard activation matches expected pattern (Enter/Space for buttons, Enter for links)
 - [ ] `aria-label` required/documented for icon-only variants
 - [ ] Disabled state uses `disabled` attribute (not just visual styling)
 - [ ] Disabled state communicated to assistive technology
+- [ ] For polymorphic components: `<a>` disabled via `aria-disabled` + click prevention
 
 #### Display components (Badge, Avatar, Tag, Chip, etc.)
 
@@ -335,7 +442,7 @@ Use this checklist when building or reviewing any component. Not every item appl
 
 #### Container components (Dialog, Dropdown, Accordion, Tooltip, etc.)
 
-- [ ] Focus trapped when open (handled by shadcn/Radix base)
+- [ ] Focus trapped when open (handled by shadcn/Radix base) — only for blocking overlays
 - [ ] Escape key closes the component
 - [ ] Focus returns to trigger element on close
 - [ ] `aria-expanded` on trigger element
@@ -417,12 +524,14 @@ Classes that need registration:
 
 - Border width side groups (`border-t-xs`, `border-b-sm` etc.) because EH uses non-standard suffix names
 - `font-weight-medium` because it doesn't match twMerge's expected font-weight pattern
+- Font size group (`text-body-xs`, `text-body-sm`, `text-body-md`, `text-body-lg`) — custom EH size names
+- Text colour group (`text-brand`, `text-error`, `text-disabled`, `text-all-white` etc.) — may conflict with font-size group
 - Any new EH utility that gets stripped unexpectedly
 
 Classes that do NOT need registration:
 
 - `bg-brand`, `bg-error` etc. — twMerge handles `bg-*` natively
-- `text-brand`, `text-default` etc. — twMerge handles `text-*` natively
+- `rounded-*` — mapped through `@theme inline`, twMerge handles natively
 
 ```ts
 const twMerge = extendTailwindMerge({
@@ -430,6 +539,8 @@ const twMerge = extendTailwindMerge({
     classGroups: {
       'border-w-t': ['border-t-xs', 'border-t-sm', ...],
       'font-weight': ['font-weight-medium', ...],
+      'font-size': ['text-body-xs', 'text-body-sm', 'text-body-md', 'text-body-lg'],
+      'text-color': ['text-brand', 'text-error', 'text-disabled', 'text-all-white', ...],
       // add new groups here only when twMerge strips a class
     },
   },
@@ -481,7 +592,6 @@ export type {
   ButtonProps,
   ButtonVariant,
   ButtonSize,
-  ButtonContent,
 } from './Button';
 ```
 
@@ -509,5 +619,7 @@ export type {
 - Never use `<div>` or `<span>` for interactive elements — use semantic HTML (`<button>`, `<a>`, `<input>`)
 - Never rely on colour alone to convey meaning — always pair with text, icon, or shape
 - Never skip focus-visible styling on interactive components
+- Never forget `focus-visible:outline-none` — browser default outlines show alongside EH focus rings
 - Never use `tabIndex={0}` on non-interactive elements unless building a custom widget with full keyboard support
 - Never add ARIA roles that duplicate native element semantics
+- Never use the generated shadcn file directly after `npx shadcn add` — write your own with EH tokens
