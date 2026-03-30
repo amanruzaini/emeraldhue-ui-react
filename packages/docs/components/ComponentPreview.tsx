@@ -31,8 +31,15 @@ interface ComponentPreviewProps {
 export function ComponentPreview({ children, title }: ComponentPreviewProps) {
   const [theme, setTheme] = useState<Theme>('theme-light')
   const [textResize, setTextResize] = useState<TextResize>('text-resize-100')
-
   const isDark = theme.includes('dark')
+
+  const selectStyle = {
+    fontSize: '0.8125rem',
+    padding: '0.25rem 0.5rem',
+    borderRadius: '0.375rem',
+    border: '1px solid var(--nextra-border-color, #e5e7eb)',
+    background: 'transparent',
+  } as const
 
   return (
     <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
@@ -53,49 +60,40 @@ export function ComponentPreview({ children, title }: ComponentPreviewProps) {
         {title && (
           <span style={{ fontWeight: 600, marginRight: 'auto' }}>{title}</span>
         )}
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-          Theme
-          <select
-            value={theme}
-            onChange={(e) => setTheme(e.target.value as Theme)}
-            style={{
-              fontSize: '0.8125rem',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '0.375rem',
-              border: '1px solid var(--nextra-border-color, #e5e7eb)',
-              background: 'transparent',
-            }}
-          >
-            {THEMES.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-          Text
-          <select
-            value={textResize}
-            onChange={(e) => setTextResize(e.target.value as TextResize)}
-            style={{
-              fontSize: '0.8125rem',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '0.375rem',
-              border: '1px solid var(--nextra-border-color, #e5e7eb)',
-              background: 'transparent',
-            }}
-          >
-            {TEXT_RESIZE.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
-              </option>
-            ))}
-          </select>
-        </label>
+
+        <>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+            Theme
+            <select
+              value={theme}
+              onChange={(e) => setTheme(e.target.value as Theme)}
+              style={selectStyle}
+            >
+              {THEMES.map((t) => (
+                <option key={t.value} value={t.value}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+            Text
+            <select
+              value={textResize}
+              onChange={(e) => setTextResize(e.target.value as TextResize)}
+              style={selectStyle}
+            >
+              {TEXT_RESIZE.map((t) => (
+                <option key={t.value} value={t.value}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </>
       </div>
 
-      {/* Preview area — applies EH data attributes for theming */}
+      {/* Preview area */}
       <div
         data-theme={theme}
         data-text-resize={textResize}

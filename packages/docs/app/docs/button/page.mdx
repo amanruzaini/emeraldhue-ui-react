@@ -8,53 +8,125 @@ import { ComponentPreview } from '../../../components/ComponentPreview'
 import { PropsTable } from '../../../components/PropsTable'
 import { Button } from '@eh/components'
 
+export const ArrowRightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+  </svg>
+)
+
+export const SearchIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+  </svg>
+)
+
+export const PlusIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14" /><path d="M12 5v14" />
+  </svg>
+)
+
 ### Variants
 
-<ComponentPreview title="Button variants">
-  <Button variant="Primary" size="md">Primary</Button>
-  <Button variant="Secondary" size="md">Secondary</Button>
-  <Button variant="Tertiary" size="md">Tertiary</Button>
-  <Button variant="Destructive" size="md">Destructive</Button>
+<ComponentPreview title="Variants">
+  <Button variant="Primary">Primary</Button>
+  <Button variant="Secondary">Secondary</Button>
+  <Button variant="Tertiary">Tertiary</Button>
+  <Button variant="Destructive">Destructive</Button>
 </ComponentPreview>
+
+```tsx
+<Button variant="Primary">Primary</Button>
+<Button variant="Secondary">Secondary</Button>
+<Button variant="Tertiary">Tertiary</Button>
+<Button variant="Destructive">Destructive</Button>
+```
 
 ### Sizes
 
-<ComponentPreview title="Button sizes">
-  <Button variant="Primary" size="xs">Extra small</Button>
-  <Button variant="Primary" size="sm">Small</Button>
-  <Button variant="Primary" size="md">Medium</Button>
-  <Button variant="Primary" size="lg">Large</Button>
+<ComponentPreview title="Sizes">
+  <Button size="xs">Extra Small</Button>
+  <Button size="sm">Small</Button>
+  <Button size="md">Medium</Button>
+  <Button size="lg">Large</Button>
 </ComponentPreview>
+
+```tsx
+<Button size="xs">Extra Small</Button>
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+```
+
+### With Icons
+
+<ComponentPreview title="With Icons">
+  <Button startIcon={<SearchIcon />}>Search</Button>
+  <Button endIcon={<ArrowRightIcon />}>Continue</Button>
+  <Button startIcon={<PlusIcon />} endIcon={<ArrowRightIcon />}>Add Item</Button>
+</ComponentPreview>
+
+```tsx
+import { Search, ArrowRight, Plus } from 'your-icon-library'
+
+<Button startIcon={<Search />}>Search</Button>
+<Button endIcon={<ArrowRight />}>Continue</Button>
+<Button startIcon={<Plus />} endIcon={<ArrowRight />}>Add Item</Button>
+```
+
+### Icon Only
+
+<ComponentPreview title="Icon Only">
+  <Button iconOnly><PlusIcon /></Button>
+  <Button variant="Secondary" iconOnly><SearchIcon /></Button>
+  <Button variant="Tertiary" iconOnly><ArrowRightIcon /></Button>
+  <Button variant="Destructive" iconOnly><PlusIcon /></Button>
+</ComponentPreview>
+
+```tsx
+<Button iconOnly><Plus /></Button>
+<Button variant="Secondary" iconOnly><Search /></Button>
+<Button variant="Tertiary" iconOnly><ArrowRight /></Button>
+<Button variant="Destructive" iconOnly><Plus /></Button>
+```
 
 ### Disabled
 
-<ComponentPreview title="Disabled buttons">
-  <Button variant="Primary" size="md" disabled>Primary</Button>
-  <Button variant="Secondary" size="md" disabled>Secondary</Button>
-  <Button variant="Tertiary" size="md" disabled>Tertiary</Button>
-  <Button variant="Destructive" size="md" disabled>Destructive</Button>
+<ComponentPreview title="Disabled">
+  <Button disabled>Primary</Button>
+  <Button variant="Secondary" disabled>Secondary</Button>
+  <Button variant="Tertiary" disabled>Tertiary</Button>
+  <Button variant="Destructive" disabled>Destructive</Button>
 </ComponentPreview>
+
+```tsx
+<Button disabled>Primary</Button>
+<Button variant="Secondary" disabled>Secondary</Button>
+<Button variant="Tertiary" disabled>Tertiary</Button>
+<Button variant="Destructive" disabled>Destructive</Button>
+```
 
 ## Props
 
 <PropsTable
   props={[
-    { name: 'children', type: 'ReactNode', default: undefined, description: 'Button label text or content', required: true },
+    { name: 'children', type: 'ReactNode', default: undefined, description: 'Button label text or icon content (for iconOnly mode)', required: true },
     { name: 'variant', type: "'Primary' | 'Secondary' | 'Tertiary' | 'Destructive'", default: "'Primary'", description: 'Visual style of the button' },
     { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size' },
     { name: 'iconOnly', type: 'boolean', default: 'false', description: 'Render as a square icon-only button. Pass the icon as children.' },
-    { name: 'startIcon', type: 'ReactNode', default: undefined, description: 'Icon displayed before the label' },
-    { name: 'endIcon', type: 'ReactNode', default: undefined, description: 'Icon displayed after the label' },
-    { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable the button' },
+    { name: 'startIcon', type: 'ReactNode', default: undefined, description: 'Icon element displayed before the label' },
+    { name: 'endIcon', type: 'ReactNode', default: undefined, description: 'Icon element displayed after the label' },
+    { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the button and applies disabled styling' },
+    { name: 'className', type: 'string', default: undefined, description: 'Additional CSS classes to apply' },
   ]}
 />
 
-> **Note**: The Button uses a code-first API with `children` for label text. The Figma Code Connect file (`Button.figma.tsx`) handles translation between Figma properties and these React props.
+> The Button uses a code-first API. The Figma Code Connect file (`Button.figma.tsx`) translates between Figma's property naming and these React props.
 
 ## Design tokens used
 
-- **Colours**: `bg-brand`, `bg-brand-inverted`, `text-all-white`, `text-default`, `border-brand`
-- **Border**: Asymmetric bezel — `border-t-xs border-l-xs border-r-xs border-b-sm`
+- **Colours**: `bg-brand`, `bg-error`, `text-all-white`, `text-strong`, `border-brand-strong`
+- **Border**: Asymmetric bezel — `border-t-xs border-x-xs border-b-{sm|md|lg}`
 - **Ring**: `default-ring-bezel` for the EH action ring + depth shadow
-- **Spacing**: `px-[var(--eh-spacing-*)]` for all internal padding
-- **Icon sizing**: `[--icon-size:var(--eh-icon-*)]` CSS custom property
+- **Spacing**: Variant/size compound variants control padding
+- **Icon sizing**: `size-icon-sm` (xs/sm) and `size-icon-md` (md/lg)
