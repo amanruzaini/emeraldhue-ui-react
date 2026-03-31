@@ -101,7 +101,7 @@ const RadioInput = React.forwardRef<HTMLInputElement, RadioInputProps>(
                   'cursor-not-allowed no-ring',
                   checked
                     ? 'bg-brand-disabled border-brand-disabled'
-                    : 'bg-avatar border-disabled',
+                    : 'bg-avatar border-weak',
                 ]
               : [
                   'cursor-pointer',

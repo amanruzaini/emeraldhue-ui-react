@@ -21,7 +21,7 @@
     --font-default: var(--eh-font-type-default);
 
     /* Numeric OpenType Feautre */
-    --eh-font-feature-ui: "ss02" 1, "cv01" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv05" 1, "cv07" 1, "cv09" 1, "cv10" 1;
+    --eh-font-feature-ui: "ss01" 1, "ss02" 1, "cv01" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv05" 1, "cv07" 1, "cv09" 1, "cv10" 1;
     --eh-font-variant-numeric-ui: lining-nums tabular-nums slashed-zero;
 
     /* Font Weights e.g. font-regular */

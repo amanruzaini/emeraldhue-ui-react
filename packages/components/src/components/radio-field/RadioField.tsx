@@ -126,7 +126,7 @@ const RadioField = React.forwardRef<HTMLInputElement, RadioFieldProps>(
         >
           <span
             data-slot="radio-field-label"
-            className={cn(labelTextVariants({ size }), labelClassName)}
+            className={cn(labelTextVariants({ size }), disabled && 'text-disabled', labelClassName)}
           >
             {children}
           </span>
@@ -135,7 +135,7 @@ const RadioField = React.forwardRef<HTMLInputElement, RadioFieldProps>(
             <span
               id={`${descriptionId}-description`}
               data-slot="radio-field-description"
-              className={cn(descriptionTextVariants({ size }), descriptionClassName)}
+              className={cn(descriptionTextVariants({ size }), disabled && 'text-disabled', descriptionClassName)}
             >
               {description}
             </span>
