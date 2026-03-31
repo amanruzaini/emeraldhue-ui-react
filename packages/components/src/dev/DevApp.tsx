@@ -38,6 +38,11 @@ import { CheckboxInput } from '../components/checkbox-input'
 import type { CheckboxInputSize } from '../components/checkbox-input'
 import { Accordion, AccordionItem } from '../components/accordion'
 import { Alert } from '../components/alert'
+import { KeyboardShortcut } from '../components/keyboard-shortcut'
+import type {
+  KeyboardShortcutColour,
+  KeyboardShortcutSize,
+} from '../components/keyboard-shortcut'
 import { RadioInput } from '../components/radio-input'
 import type { RadioInputSize } from '../components/radio-input'
 import { RadioField } from '../components/radio-field'
@@ -73,6 +78,8 @@ const notificationNonSemanticShapes: BadgeNotificationNonSemanticShape[] = ['Sol
 const notificationNonSemanticColours: BadgeNotificationNonSemanticColour[] = ['Brand', 'Neutral']
 const notificationSemanticShapes: BadgeNotificationSemanticShape[] = ['Solid', 'Inverted']
 const notificationSemanticStatuses: BadgeNotificationSemanticStatus[] = ['Info', 'Alert']
+const keyboardShortcutSizes: KeyboardShortcutSize[] = ['sm', 'md', 'lg']
+const keyboardShortcutColours: KeyboardShortcutColour[] = ['neutral', 'brand', 'destructive']
 const radioInputSizes: RadioInputSize[] = ['sm', 'md', 'lg']
 
 const previewImageSrc = `data:image/svg+xml;utf8,${encodeURIComponent(
@@ -728,6 +735,71 @@ export function DevApp() {
             </AccordionItem>
           </Accordion>
         </PreviewCard>
+      </PreviewSection>
+
+      <PreviewSection title="Keyboard Shortcut">
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={cellStyle}>Colour \\ Size</th>
+              {keyboardShortcutSizes.map((size) => (
+                <th key={size} style={cellStyle}>
+                  {size}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {keyboardShortcutColours.map((colour) => (
+              <tr key={colour}>
+                <td style={{ ...cellStyle, fontWeight: 700 }}>{colour}</td>
+                {keyboardShortcutSizes.map((size) => (
+                  <td key={`${colour}-${size}`} style={cellStyle}>
+                    <KeyboardShortcut size={size} colour={colour}>
+                      K
+                    </KeyboardShortcut>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div style={{ height: '1.5rem' }} />
+
+        <div style={cardGridStyle}>
+          <PreviewCard title="Two Keys">
+            <KeyboardShortcut keys={2} modifierKey="⌘" size="sm">
+              K
+            </KeyboardShortcut>
+            <KeyboardShortcut keys={2} modifierKey="Shift" size="md" colour="brand">
+              Tab
+            </KeyboardShortcut>
+            <KeyboardShortcut keys={2} modifierKey="Ctrl" size="lg" colour="destructive">
+              Del
+            </KeyboardShortcut>
+          </PreviewCard>
+
+          <PreviewCard title="Single Keys">
+            <KeyboardShortcut size="sm">Esc</KeyboardShortcut>
+            <KeyboardShortcut size="md" colour="brand">
+              Enter
+            </KeyboardShortcut>
+            <KeyboardShortcut size="lg" colour="destructive">
+              F5
+            </KeyboardShortcut>
+          </PreviewCard>
+
+          <PreviewCard title="Disabled">
+            <KeyboardShortcut disabled>Esc</KeyboardShortcut>
+            <KeyboardShortcut keys={2} modifierKey="⌘" size="md" disabled>
+              P
+            </KeyboardShortcut>
+            <KeyboardShortcut keys={2} modifierKey="Ctrl" size="lg" colour="brand" disabled>
+              S
+            </KeyboardShortcut>
+          </PreviewCard>
+        </div>
       </PreviewSection>
 
       <PreviewSection title="Alert">
