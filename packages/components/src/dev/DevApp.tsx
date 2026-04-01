@@ -312,6 +312,26 @@ export function DevApp() {
               </Button>
             ))}
           </PreviewCard>
+
+          <PreviewCard title="With Shortcut">
+            <Button variant="Primary" size="sm" shortcut="K">Primary</Button>
+            <Button variant="Primary" size="md" shortcut={['Ctrl', 'K']}>Primary</Button>
+            <Button variant="Secondary" size="sm" shortcut="S">Secondary</Button>
+            <Button variant="Tertiary" size="sm" shortcut="T">Tertiary</Button>
+            <Button variant="Destructive" size="sm" shortcut={['Ctrl', 'K']}>Destructive</Button>
+          </PreviewCard>
+
+          <PreviewCard title="Disabled With Shortcut">
+            <Button variant="Primary" size="sm" shortcut="K" disabled>Primary</Button>
+            <Button variant="Secondary" size="sm" shortcut="S" disabled>Secondary</Button>
+          </PreviewCard>
+
+          <PreviewCard title="xs Size">
+            <Button variant="Primary" size="xs">Primary xs</Button>
+            <Button variant="Primary" size="xs" iconOnly><PlaceholderIcon /></Button>
+            <Button variant="Secondary" size="xs">Secondary xs</Button>
+            <Button variant="Destructive" size="xs">Destructive xs</Button>
+          </PreviewCard>
         </div>
       </PreviewSection>
 
