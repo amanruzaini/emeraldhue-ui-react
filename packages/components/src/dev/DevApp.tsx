@@ -46,6 +46,7 @@ import type {
 import { RadioInput } from '../components/radio-input'
 import type { RadioInputSize } from '../components/radio-input'
 import { RadioField } from '../components/radio-field'
+import { Pagination } from '../components/pagination'
 
 const themes = [
   'theme-light',
@@ -212,6 +213,9 @@ function PreviewCard({
 
 export function DevApp() {
   const [theme, setTheme] = React.useState<(typeof themes)[number]>('theme-light')
+  const [paginationPage, setPaginationPage] = React.useState(2)
+  const [paginationBarPage, setPaginationBarPage] = React.useState(2)
+  const [paginationSibling2Page, setPaginationSibling2Page] = React.useState(5)
 
   React.useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -897,6 +901,65 @@ export function DevApp() {
                 Disabled selected
               </RadioField>
             </div>
+          </PreviewCard>
+        </div>
+      </PreviewSection>
+
+      <PreviewSection title="Pagination">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <PreviewCard title="Card variant (8 pages, current page interactive)">
+            <Pagination
+              variant="card"
+              page={paginationPage}
+              totalPages={8}
+              onPageChange={setPaginationPage}
+            />
+          </PreviewCard>
+
+          <PreviewCard title="Bar variant (8 pages, current page interactive)">
+            <Pagination
+              variant="bar"
+              page={paginationBarPage}
+              totalPages={8}
+              onPageChange={setPaginationBarPage}
+            />
+          </PreviewCard>
+
+          <PreviewCard title="Card variant — siblingCount=2 (10 pages, page 5, interactive)">
+            <Pagination
+              variant="card"
+              page={paginationSibling2Page}
+              totalPages={10}
+              siblingCount={2}
+              onPageChange={setPaginationSibling2Page}
+            />
+          </PreviewCard>
+
+          <PreviewCard title="Card variant — first page (Previous disabled)">
+            <Pagination
+              variant="card"
+              page={1}
+              totalPages={8}
+              onPageChange={() => {}}
+            />
+          </PreviewCard>
+
+          <PreviewCard title="Card variant — last page (Next disabled)">
+            <Pagination
+              variant="card"
+              page={8}
+              totalPages={8}
+              onPageChange={() => {}}
+            />
+          </PreviewCard>
+
+          <PreviewCard title="Card variant — 3 total pages (no ellipsis)">
+            <Pagination
+              variant="card"
+              page={2}
+              totalPages={3}
+              onPageChange={() => {}}
+            />
           </PreviewCard>
         </div>
       </PreviewSection>
