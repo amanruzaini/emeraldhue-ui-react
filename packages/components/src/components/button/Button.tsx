@@ -12,7 +12,7 @@ export const buttonVariants = cva(
     'rounded-md',
     'transition-all duration-quick-3',
     'focus-visible:outline-none',
-    'disabled:no-ring disabled:pointer-events-none disabled:cursor-not-allowed',
+    'disabled:no-ring disabled:cursor-not-allowed',
   ],
   {
     variants: {
@@ -68,8 +68,8 @@ export const buttonVariants = cva(
         ],
       },
       size: {
-        xs: 'border-b-xs p-1 text-body-xs',
-        sm: 'border-b-sm',
+        xs: 'border-b-xs p-2 text-body-xs',
+        sm: 'border-b-sm text-body-sm',
         md: 'border-b-md p-6 text-body-sm',
         lg: 'border-b-lg px-6 py-7 text-body-md',
       },
@@ -83,7 +83,7 @@ export const buttonVariants = cva(
       {
         variant: 'Secondary',
         size: 'sm',
-        className: 'p-4 text-body-xs',
+        className: 'p-4 text-body-sm',
       },
       {
         variant: 'Tertiary',
@@ -93,7 +93,12 @@ export const buttonVariants = cva(
       {
         variant: 'Destructive',
         size: 'sm',
-        className: 'px-6 py-4 text-body-xs',
+        className: 'px-6 py-4 text-body-sm',
+      },
+      {
+        variant: 'Destructive',
+        size: 'xs',
+        className: 'px-1 py-2',
       },
     ],
     defaultVariants: {
@@ -110,6 +115,44 @@ const iconSizeClassBySize: Record<ButtonSize, string> = {
   lg: 'size-icon-md',
 }
 
+/**
+ * Variant-aware colour classes for inline keyboard shortcut keys.
+ * Each entry maps to: background, border, text (+ disabled equivalents)
+ */
+const shortcutKeyColorsByVariant: Record<
+  ButtonVariant,
+  { bg: string; border: string; text: string; disabledBg: string; disabledBorder: string }
+> = {
+  Primary: {
+    bg: 'bg-brand-hover',
+    border: 'border-brand',
+    text: 'text-all-white',
+    disabledBg: 'bg-brand-disabled',
+    disabledBorder: 'border-brand-disabled',
+  },
+  Secondary: {
+    bg: 'bg-application-shell',
+    border: 'border-weak',
+    text: 'text-weak',
+    disabledBg: 'bg-disabled',
+    disabledBorder: 'border-disabled',
+  },
+  Tertiary: {
+    bg: 'bg-application-shell',
+    border: 'border-weak',
+    text: 'text-weak',
+    disabledBg: 'bg-disabled',
+    disabledBorder: 'border-disabled',
+  },
+  Destructive: {
+    bg: 'bg-error-hover',
+    border: 'border-error',
+    text: 'text-all-white',
+    disabledBg: 'bg-error-disabled',
+    disabledBorder: 'border-error-disabled',
+  },
+}
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
@@ -123,6 +166,12 @@ export interface ButtonProps
   startIcon?: React.ReactNode
   /** Maps to Figma "Icon Trailing" property. Shown when provided. */
   endIcon?: React.ReactNode
+  /** Maps to Figma "Shortcut" property. Renders inline keyboard shortcut key badge(s).
+   *  Pass a single key string or array of key strings.
+   *  @example shortcut="K"
+   *  @example shortcut={['Ctrl', 'K']}
+   */
+  shortcut?: string | string[]
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -133,6 +182,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       iconOnly = false,
       startIcon,
       endIcon,
+      shortcut,
       className,
       children,
       ...props
@@ -140,6 +190,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const iconSizeClass = iconSizeClassBySize[size]
+    const isDisabled = props.disabled ?? false
+    const keyColors = shortcutKeyColorsByVariant[variant]
+    const shortcutKeys = shortcut
+      ? Array.isArray(shortcut)
+        ? shortcut
+        : [shortcut]
+      : null
 
     return (
       <button
@@ -163,6 +220,29 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               </span>
             )}
             <span className="whitespace-nowrap">{children}</span>
+            {shortcutKeys && (
+              <span className="inline-flex items-center gap-1">
+                {shortcutKeys.map((key) => (
+                  <kbd
+                    key={key}
+                    className={cn(
+                      'inline-flex items-center justify-center',
+                      'min-w-[20px] px-2 py-0 rounded-sm',
+                      'border-xs border-solid',
+                      'text-[length:var(--eh-font-size-body-sm)]',
+                      'leading-[var(--eh-font-line-height-body-xs)]',
+                      'tracking-[var(--eh-font-letter-spacing-body-sm)]',
+                      'font-default font-weight-regular',
+                      isDisabled ? keyColors.disabledBg : keyColors.bg,
+                      isDisabled ? keyColors.disabledBorder : keyColors.border,
+                      keyColors.text,
+                    )}
+                  >
+                    {key}
+                  </kbd>
+                ))}
+              </span>
+            )}
             {endIcon && (
               <span className={cn('shrink-0', iconSizeClass)}>
                 {endIcon}

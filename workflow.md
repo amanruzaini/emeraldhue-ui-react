@@ -2,8 +2,8 @@
 
 > **Last updated:** 2026-03-30
 >
-> | Date | Change |
-> | --- | --- |
+> | Date       | Change                                                                                                                                                                                                                                                        |
+> | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 > | 2026-03-30 | Created. Extracted agent roles, dual-prompt workflow, branch hygiene, and session startup from `eh-project-handoff.md`. Moved per-component a11y checklists here from `component-patterns.md`. Compressed 14-step process into before/during/after structure. |
 
 How the team operates: agent roles, the build process, review gates, and session management.
@@ -27,7 +27,7 @@ How the team operates: agent roles, the build process, review gates, and session
 
 - Receive the prompt and generate component code
 - Claude Code creates the full 3-file structure plus barrel exports and dependency installs
-- Codex generates `Component.tsx` only (for side-by-side comparison)
+- Codex generates `codex-Component.tsx` only (for side-by-side comparison)
 - Commits the code
 
 **Aman (project lead):**
@@ -206,7 +206,7 @@ For docs site work:
 
 ### What's currently previewed
 
-- Button (variants × sizes, icons, icon-only, disabled)
+- Button (variants × sizes, icons, icon-only, disabled, shortcut single/multi-key, disabled+shortcut, xs size)
 - Checkbox Input (sizes × states)
 - Checkbox Field (sizes × states with description)
 - Avatar Single (types × sizes, indicator types)

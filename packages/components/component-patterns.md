@@ -230,19 +230,20 @@ The public React API must be **code-first and ergonomic**. Engineers should not 
 
 #### Naming conventions
 
-| Figma property                        | React prop                                    | Reason                                  |
-| ------------------------------------- | --------------------------------------------- | --------------------------------------- |
-| `Type` (Primary, Secondary...)        | `variant`                                     | Standard React/shadcn convention        |
-| `Size` (xs, sm, md...)                | `size`                                        | Already code-friendly                   |
-| `Label`                               | `children`                                    | Standard React pattern for text content |
-| `Icon Leading` (boolean) + icon slot  | `startIcon?: ReactNode`                       | Single prop, render when provided       |
-| `Icon Trailing` (boolean) + icon slot | `endIcon?: ReactNode`                         | Single prop, render when provided       |
-| `Content` (Label+icon / Icon only)    | `iconOnly?: boolean`                          | Or infer from children                  |
-| `Disabled`                            | `disabled`                                    | Standard HTML attribute (via ...props)  |
-| `Indicator` (boolean)                 | `indicator?: boolean`                         | Already code-friendly                   |
-| `Online` (boolean)                    | `online?: boolean`                            | Already code-friendly                   |
-| `Number` (boolean)                    | `count?: number`                              | Single prop — shown when provided       |
-| `Badge` (boolean) + label             | `showBadge?: boolean` + `badgeLabel?: string` | Internal composition (see below)        |
+| Figma property                        | React prop                                    | Reason                                         |
+| ------------------------------------- | --------------------------------------------- | ---------------------------------------------- |
+| `Type` (Primary, Secondary...)        | `variant`                                     | Standard React/shadcn convention               |
+| `Size` (xs, sm, md...)                | `size`                                        | Already code-friendly                          |
+| `Label`                               | `children`                                    | Standard React pattern for text content        |
+| `Icon Leading` (boolean) + icon slot  | `startIcon?: ReactNode`                       | Single prop, render when provided              |
+| `Icon Trailing` (boolean) + icon slot | `endIcon?: ReactNode`                         | Single prop, render when provided              |
+| `Content` (Label+icon / Icon only)    | `iconOnly?: boolean`                          | Or infer from children                         |
+| `Disabled`                            | `disabled`                                    | Standard HTML attribute (via ...props)         |
+| `Indicator` (boolean)                 | `indicator?: boolean`                         | Already code-friendly                          |
+| `Online` (boolean)                    | `online?: boolean`                            | Already code-friendly                          |
+| `Number` (boolean)                    | `count?: number`                              | Single prop — shown when provided              |
+| `Badge` (boolean) + label             | `showBadge?: boolean` + `badgeLabel?: string` | Internal composition (see below)               |
+| `Shortcut` (boolean) + key content    | `shortcut?: string \| string[]`               | Single prop — renders key badges when provided |
 
 #### Key rules
 
@@ -274,13 +275,28 @@ figma.connect(Button, FIGMA_URL, {
     label: figma.string('Label'),
     iconLeading: figma.boolean('Icon Leading'),
     leadIcon: figma.children('Icon Leading'),
+    shortcut: figma.boolean('Shortcut'),
   },
-  example: ({ variant, label, iconLeading, leadIcon }) => (
-    <Button variant={variant} startIcon={iconLeading ? leadIcon : undefined}>
+  example: ({ variant, label, iconLeading, leadIcon, shortcut }) => (
+    <Button
+      variant={variant}
+      startIcon={iconLeading ? leadIcon : undefined}
+      shortcut={shortcut ? ['K'] : undefined}
+    >
       {label}
     </Button>
   ),
 })
+```
+
+---
+
+### 3. `known-issues.md`
+
+**Find the "Non-standard typography composite usage" list at the very bottom.** Append this bullet:
+
+```
+- Button (shortcut key `<kbd>` badges — body-sm font size + body-xs line-height)
 ```
 
 #### Internal composition pattern
