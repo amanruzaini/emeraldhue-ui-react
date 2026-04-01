@@ -2,8 +2,8 @@
 
 > **Last updated:** 2026-03-30
 >
-> | Date | Change |
-> | --- | --- |
+> | Date       | Change                                                                                                                                                                                                                                     |
+> | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 > | 2026-03-30 | Restructured from original monolithic handoff doc. Moved issues to `known-issues.md`, workflow/agent roles to `workflow.md`, removed duplicated rules (now in `component-patterns.md` only). Components section condensed to table format. |
 
 ---
@@ -149,24 +149,26 @@ See `workflow.md` for agent roles, dual-prompt process, branch hygiene, dev prev
 - **Badge components** introduced the non-standard typography composite pattern (body-sm font size + body-xs line height) and nested Record lookups for text colour mapping.
 - **AvatarGroup** uses `React.Children.toArray` + `cloneElement` to force size/indicator/overlap on children, with negative margin overlap and container right-padding offset.
 - **Accordion** was the first shadcn/Radix override — established the workflow of installing the Radix dependency but writing the component from scratch with EH tokens.
+- **Pagination** established the dual-layout variant pattern: the same internal sub-components (`PaginationItem`, `Ellipsis`, `generatePageRange` algorithm) render inside two different container layouts via a single `variant` prop (`"card"` / `"bar"`). Card variant reuses EH `Button variant="Secondary" size="sm"` for prev/next; bar variant uses custom `BarNavButton` cell buttons to achieve seamless joined cells without fighting Button CVA. The component is controlled-only (`page` + `onPageChange` required) — the rationale is documented inline at the top of the file for engineering team discussion. Keyboard shortcut hints (Figma placeholder) and the remaining 3 simpler Figma variants are deferred.
 
 ### Status
 
-| Component | Path | Base | Status | Notes |
-| --- | --- | --- | --- | --- |
-| Button | `button/Button.tsx` | Scratch, CVA | Complete | Code-first API: `children`, `startIcon`/`endIcon`, `iconOnly` |
-| CheckboxInput | `checkbox-input/CheckboxInput.tsx` | Scratch, CVA | Complete | Custom styled checkbox, sizes sm/md/lg |
-| CheckboxField | `checkbox-field/CheckboxField.tsx` | Scratch | Complete | Composes CheckboxInput, adds label + description |
-| AvatarSingle | `avatar-single/AvatarSingle.tsx` | Scratch, CVA | Complete | 8 sizes, image/initial types, status/logo indicators |
-| AvatarGroup | `avatar-group/AvatarGroup.tsx` | Scratch | Complete | Composes AvatarSingle, `max` overflow, sizes xs/sm/md |
-| BadgeNonSemantic | `badge-non-semantic/BadgeNonSemantic.tsx` | Scratch, CVA | Complete | `<span>` root, appearance × colour, non-standard typography |
-| BadgeSemantic | `badge-semantic/BadgeSemantic.tsx` | Scratch, CVA | Complete | Status axis replaces colour, arbitrary fallback for `border-warning-weak` |
-| BadgeNotificationNonSemantic | `badge-notification-non-semantic/...` | Scratch, CVA | Complete | Dot/number modes, `count` replaces Figma `Number` boolean |
-| BadgeNotificationSemantic | `badge-notification-semantic/...` | Scratch, CVA | Complete | Alert maps to error tokens, flat text colour Record |
-| Accordion | `accordion/Accordion.tsx` | Radix | Complete | Single/multiple modes, internal BadgeNonSemantic composition |
-| ButtonGroup | `button-group/ButtonGroup.tsx` | Scratch | Complete | `overflow-visible` for focus ring, child selector rounding |
-| TextLink | `text-link/TextLink.tsx` | Scratch, CVA | Complete | Polymorphic `<a>`/`<button>`, code-first from start |
-| KeyboardShortcut | `keyboard-shortcut/KeyboardShortcut.tsx` | Scratch, CVA | Complete | Display-only, 1 or 2 key slots |
+| Component                    | Path                                      | Base                   | Status   | Notes                                                                                                                                                                                                                                                              |
+| ---------------------------- | ----------------------------------------- | ---------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Button                       | `button/Button.tsx`                       | Scratch, CVA           | Complete | Code-first API: `children`, `startIcon`/`endIcon`, `iconOnly`                                                                                                                                                                                                      |
+| CheckboxInput                | `checkbox-input/CheckboxInput.tsx`        | Scratch, CVA           | Complete | Custom styled checkbox, sizes sm/md/lg                                                                                                                                                                                                                             |
+| CheckboxField                | `checkbox-field/CheckboxField.tsx`        | Scratch                | Complete | Composes CheckboxInput, adds label + description                                                                                                                                                                                                                   |
+| AvatarSingle                 | `avatar-single/AvatarSingle.tsx`          | Scratch, CVA           | Complete | 8 sizes, image/initial types, status/logo indicators                                                                                                                                                                                                               |
+| AvatarGroup                  | `avatar-group/AvatarGroup.tsx`            | Scratch                | Complete | Composes AvatarSingle, `max` overflow, sizes xs/sm/md                                                                                                                                                                                                              |
+| BadgeNonSemantic             | `badge-non-semantic/BadgeNonSemantic.tsx` | Scratch, CVA           | Complete | `<span>` root, appearance × colour, non-standard typography                                                                                                                                                                                                        |
+| BadgeSemantic                | `badge-semantic/BadgeSemantic.tsx`        | Scratch, CVA           | Complete | Status axis replaces colour, arbitrary fallback for `border-warning-weak`                                                                                                                                                                                          |
+| BadgeNotificationNonSemantic | `badge-notification-non-semantic/...`     | Scratch, CVA           | Complete | Dot/number modes, `count` replaces Figma `Number` boolean                                                                                                                                                                                                          |
+| BadgeNotificationSemantic    | `badge-notification-semantic/...`         | Scratch, CVA           | Complete | Alert maps to error tokens, flat text colour Record                                                                                                                                                                                                                |
+| Accordion                    | `accordion/Accordion.tsx`                 | Radix                  | Complete | Single/multiple modes, internal BadgeNonSemantic composition                                                                                                                                                                                                       |
+| ButtonGroup                  | `button-group/ButtonGroup.tsx`            | Scratch                | Complete | `overflow-visible` for focus ring, child selector rounding                                                                                                                                                                                                         |
+| TextLink                     | `text-link/TextLink.tsx`                  | Scratch, CVA           | Complete | Polymorphic `<a>`/`<button>`, code-first from start                                                                                                                                                                                                                |
+| KeyboardShortcut             | `keyboard-shortcut/KeyboardShortcut.tsx`  | Scratch, CVA           | Complete | Display-only, 1 or 2 key slots                                                                                                                                                                                                                                     |
+| Pagination                   | `pagination/Pagination.tsx`               | Scratch + Button reuse | Complete | Controlled only. Two variants: `card` (Card full combined), `bar` (Full combined). Card prev/next reuse EH Button `Secondary` `sm`. Bar prev/next are custom `BarNavButton` cells. `generatePageRange` algo with `siblingCount`. Keyboard shortcut hints deferred. |
 
 All component paths are relative to `packages/components/src/components/`.
 
@@ -180,6 +182,7 @@ All component paths are relative to `packages/components/src/components/`.
 
 - **Alert** — planned as inline notification (CVA from scratch). Toast/notification variant (portal, animation, stacking) planned as separate component later
 - **Tooltip / TooltipGuide** — two-component approach recommended: simple `Tooltip` (hover) + `TooltipGuide` (rich guided tour with steps, CTA buttons, image support)
+- **Pagination (remaining variants)** — Card simple combined, Card simple separated, and Simple variants are straightforward reductions of existing sub-components. Will add `renderSummary?: (page: number, totalPages: number) => React.ReactNode` render prop for the "Page X of Y" text. Keyboard shortcut hints (`previousKeys`/`nextKeys` props composing `KeyboardShortcut`) deferred until state management is in place.
 - Input / Text field
 - Select (shadcn base)
 - Dialog / Modal (shadcn base)

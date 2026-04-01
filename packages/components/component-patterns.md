@@ -2,8 +2,8 @@
 
 > **Last updated:** 2026-03-30
 >
-> | Date | Change |
-> | --- | --- |
+> | Date       | Change                                                                                                                                                                                                   |
+> | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 > | 2026-03-30 | Restructured into stable rulebook only. Moved workarounds and token gap details to `known-issues.md`, per-component a11y checklists to `workflow.md`, component status notes to `eh-project-handoff.md`. |
 
 A reference guide for building components in the Emerald HUE component library.
@@ -182,6 +182,17 @@ For icon sizing inside components, use the CSS custom property pattern:
 
 **Always add `focus-visible:outline-none` on interactive components.** Browsers show a native outline alongside the EH focus-ring box-shadow.
 
+### Joined containers and focus ring clipping
+
+When elements are joined inside a shared container with `overflow-clip` (bars, segmented controls), outset `box-shadow` focus rings get clipped.
+
+**Known approaches:**
+
+- `overflow-visible` + explicit `rounded-{l,r}-*` on first/last children (used by ButtonGroup). Works when child backgrounds don't bleed at corners.
+- For cases where child backgrounds bleed (e.g. Pagination bar variant active state), this approach may cause visual regressions. Alternative solutions (outline-based focus rings, `clip-path`, `z-index` layering) are under investigation.
+
+When building joined container components, test focus ring visibility by tabbing through all interactive children before committing.
+
 ---
 
 ## Component anatomy
@@ -286,6 +297,44 @@ badgeLabel?: string  // defaults to "New"
 ```
 
 Use the flexible `ReactNode` slot pattern instead when consumers need to pass different component types or styles.
+
+### Dual-layout variant pattern (established with Pagination)
+
+When a single component needs to render in fundamentally different container layouts (e.g. standalone card vs joined bar), use a `variant` prop that switches the outer container structure while reusing the same internal sub-components.
+
+```tsx
+// ✅ correct — shared sub-components, different containers
+const Pagination = ({ variant = 'card', ... }) => {
+  const pageRange = generatePageRange(page, totalPages, siblingCount)
+
+  if (variant === 'card') {
+    return (
+      <nav className="flex items-center justify-between ...">
+        <Button .../>                    {/* reuse EH Button */}
+        <div className="inline-flex ..."> {/* page group container */}
+          {pageRange.map(item => <PaginationItem layoutVariant="card" ... />)}
+        </div>
+        <Button .../>
+      </nav>
+    )
+  }
+
+  // bar variant — different container, same PaginationItem
+  return (
+    <nav className="inline-flex ...">
+      <BarNavButton .../>                {/* custom cell button */}
+      {pageRange.map(item => <PaginationItem layoutVariant="bar" ... />)}
+      <BarNavButton .../>
+    </nav>
+  )
+}
+```
+
+Key rules:
+
+- Internal sub-components accept a `layoutVariant` prop to adjust sizing/spacing per layout
+- Logic (page range algorithm, disabled state, event handlers) is shared — not duplicated per variant
+- When the existing EH component (e.g. Button) doesn't fit a variant's container constraints (e.g. seamless bar cells), build a small internal sub-component instead of fighting CVA overrides
 
 ### Polymorphic components
 
@@ -490,11 +539,7 @@ Always export the component, its variants, and all types:
 
 ```ts
 export { Button, buttonVariants } from './Button';
-export type {
-  ButtonProps,
-  ButtonVariant,
-  ButtonSize,
-} from './Button';
+export type { ButtonProps, ButtonVariant, ButtonSize } from './Button';
 ```
 
 ---

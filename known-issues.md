@@ -2,8 +2,8 @@
 
 > **Last updated:** 2026-03-30
 >
-> | Date | Change |
-> | --- | --- |
+> | Date       | Change                                                                                                                                                                                                              |
+> | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 > | 2026-03-30 | Created. Consolidated Issues 1–10, token verification findings, and arbitrary fallback list from original `eh-project-handoff.md`. Added non-standard typography composite usage list from `component-patterns.md`. |
 
 Issues encountered during development, token gaps, and temporary workarounds. This file is append-only — add new issues at the bottom. Remove entries only when the root cause is fixed.
@@ -112,6 +112,7 @@ Two things break when the docs site imports the EH CSS pipeline:
 **Solution:**
 
 1. Created `packages/docs/postcss.config.mjs`:
+
 ```js
 export default {
   plugins: {
@@ -123,6 +124,59 @@ export default {
 2. Restructured `globals.css` so that `@import "tailwindcss"` and `@theme inline` are at the top level — not nested inside cross-package imports.
 
 **Key rule for future consumers via Next.js:** Always add a `postcss.config.mjs` with `@tailwindcss/postcss`, and ensure `@import "tailwindcss"` plus the `@theme inline` block appear at the top level of your CSS entry file.
+
+---
+
+## Issue 11: Bar variant Pagination focus ring clipped
+
+**Component:** Pagination (bar variant)
+**Status:** Deferred
+
+The bar variant `<nav>` container uses `overflow-clip` to keep child backgrounds (e.g. active page `bg-disabled`) within the rounded corners. This clips the outset `box-shadow` focus ring (5px spread) on all child elements — page items and prev/next buttons.
+
+**Attempted fix:** Replaced `overflow-clip` with `overflow-visible` and added explicit `rounded-l-lg` / `rounded-r-lg` to first/last children (same pattern as ButtonGroup). Reverted — introduced visual regressions with background bleeding at corners.
+
+**Impact:** Bar variant page items show a truncated focus ring. Bar variant prev/next buttons show no visible focus ring when tabbing. Card variant is not affected.
+
+**Possible approaches for future:**
+
+- Use `outline` instead of `box-shadow` for focus rings inside joined containers (outlines respect overflow differently)
+- Use `clip-path` instead of `overflow-clip` (allows box-shadow to escape while still clipping backgrounds)
+- Use `isolation: isolate` + `z-index` layering to let focus rings paint above the container
+
+---
+
+## Issue 12: Missing pseudo-class utility variants for brand-inverted and border-brand-hover
+
+**Component:** Pagination (affects PaginationItem and BarNavButton)
+**Status:** Workaround in place
+
+The following tokens have no `hover:` or `active:` pseudo-class utility variants defined in `@layer utilities` in `input.css`:
+
+- `bg-brand-inverted` — no `hover:bg-brand-inverted` or `active:bg-brand-inverted`
+- `border-brand-hover` — no `hover:border-brand-hover`
+
+**Workaround:** Using arbitrary value form:
+
+- `hover:bg-[var(--eh-colour-bg-brand-inverted)]`
+- `active:bg-[var(--eh-colour-bg-brand-inverted)]`
+- `hover:border-[var(--eh-colour-border-brand-hover)]`
+
+**Fix:** Add pseudo-class variants to `packages/tokens/src/input.css` in `@layer utilities`:
+
+```css
+.hover\:bg-brand-inverted:hover {
+  background-color: var(--eh-colour-bg-brand-inverted);
+}
+.active\:bg-brand-inverted:active {
+  background-color: var(--eh-colour-bg-brand-inverted);
+}
+.hover\:border-brand-hover:hover {
+  border-color: var(--eh-colour-border-brand-hover);
+}
+```
+
+This would let future components use the clean utility form instead of arbitrary values. Low priority — the arbitrary form works correctly.
 
 ---
 
